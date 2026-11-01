@@ -1,0 +1,112 @@
+:root {
+      --hud-orange: #FF4400;
+      --hud-light: #EAE9E4;
+      --hud-dark: #050505;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #EAE9E4;
+      color: #111111;
+      overflow-x: hidden;
+    }
+    /* Technical HUD Chamfered Frame */
+    .hud-chamfer {
+      clip-path: polygon(
+        18px 0%, calc(100% - 18px) 0%, 100% 18px,
+        100% calc(100% - 18px), calc(100% - 18px) 100%,
+        18px 100%, 0% calc(100% - 18px), 0% 18px
+      );
+    }
+    .hud-chamfer-sm {
+      clip-path: polygon(
+        10px 0%, calc(100% - 10px) 0%, 100% 10px,
+        100% calc(100% - 10px), calc(100% - 10px) 100%,
+        10px 100%, 0% calc(100% - 10px), 0% 10px
+      );
+    }
+    /* Technical Grid Overlay */
+    .hud-grid-light {
+      background-image:
+        linear-gradient(to right, rgba(17, 17, 17, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(17, 17, 17, 0.05) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    .hud-grid-dark {
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 64px 64px;
+    }
+    /* Perspective Floor Grid for Community Section */
+    .perspective-floor {
+      background-image:
+        linear-gradient(to right, rgba(255, 68, 0, 0.22) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(17, 17, 17, 0.14) 1px, transparent 1px);
+      background-size: 56px 40px;
+    }
+    /* Crosshair Marker */
+    .crosshair {
+      position: relative;
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+    }
+    .crosshair::before, .crosshair::after {
+      content: '';
+      position: absolute;
+      background-color: currentColor;
+    }
+    .crosshair::before {
+      top: 7px;
+      left: 0;
+      width: 15px;
+      height: 1px;
+    }
+    .crosshair::after {
+      top: 0;
+      left: 7px;
+      width: 1px;
+      height: 15px;
+    }
+    /* Giant Display Headline Styling matching Mockup 1 & 2 */
+    .hero-display {
+      font-family: 'Space Grotesk', 'Inter', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.92;
+    }
+    /* Seamless Astronaut Blend on Light #E8E7E5 */
+    .blend-astronaut-light {
+      mix-blend-mode: darken;
+      filter: contrast(1.04);
+    }
+    .blend-astronaut-dark {
+      mix-blend-mode: lighten;
+      filter: contrast(1.06);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111111;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #FF4400;
+    }
+    /* Pulse animation for active telemetry dot */
+    @keyframes orbitPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.35); opacity: 0.65; }
+    }
+    .orbit-dot {
+      animation: orbitPulse 2.2s infinite ease-in-out;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(1.2deg); }
+    }
+    .satellite-float {
+      animation: floatSlow 6s infinite ease-in-out;
+    }

@@ -1,0 +1,29 @@
+{
+  "organization": "GREVIX",
+  "tagline": "A Few Who Builds What's Next",
+  "flagshipProgram": {
+    "title": "She Builds",
+    "duration": "3 Months",
+    "eligibility": "Exclusively for girls — open to all idea creators in Week 1",
+    "shortlistCount": 2,
+    "ownershipPolicy": "Shared between the idea creator and Grevix under clearly defined terms, with proper credit for everyone involved.",
+    "roadmap": [
+      {
+        "month": 1,
+        "name": "Explore",
+        "week1": "Complete creative freedom to explore ideas and decide what to build and how to approach it. Top 2 most promising ideas are selected at the end of Week 1.",
+        "weeks2to4": "Refine concepts, validate system architecture, and plan the engineering approach."
+      },
+      {
+        "month": 2,
+        "name": "Build & Grevix Innovation Lab",
+        "summary": "Build teams, start active development, and unlock the Grevix Innovation Lab (mentorship, collaboration with industry professionals and engineers, and opportunities to connect with companies)."
+      },
+      {
+        "month": 3,
+        "name": "Improve, Test & Showcase",
+        "summary": "Focus on improving, rigorous testing, and showcasing completed projects to partner companies and the community."
+      }
+    ]
+  }
+}

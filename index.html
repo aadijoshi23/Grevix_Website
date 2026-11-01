@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GREVIX — Global Hackathon & Open Innovation Platform | She Builds Fellowship</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Press+Start+2P&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            pixel: ['"Press Start 2P"', 'monospace'],
+          },
+          colors: {
+            grevix: {
+              light: '#EAE9E4',
+              paper: '#F4F3EF',
+              dark: '#050505',
+              obsidian: '#0B0B0C',
+              orange: '#FF4400',
+              orangeHover: '#E03B00',
+              pink: '#E285A9',
+              ink: '#111111',
+              muted: '#5E5E5A'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="./src/styles/hud.css" />
+</head>
+<body class="selection:bg-grevix-orange selection:text-white">
+
+  <!-- TOP FIXED HUD NAVIGATION BAR (Matching Mockups 1-4) -->
+  <header id="hud-header" class="sticky top-0 z-40 bg-[#EAE9E4]/95 backdrop-blur-md border-b border-black/20 transition-colors duration-300">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+      <!-- Left: Brand + Section Index -->
+      <div class="flex items-center gap-4 sm:gap-6">
+        <a href="#section-home" data-nav="home" class="nav-trigger flex items-center gap-2.5 group focus:outline-none">
+          <!-- Grevix Orbital Ring Logo -->
+          <span class="relative w-7 h-7 rounded-full border-[3px] border-current flex items-center justify-center transition-transform group-hover:rotate-45">
+            <span class="w-2 h-2 rounded-full bg-grevix-orange"></span>
+            <span class="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-0.5 bg-current"></span>
+          </span>
+          <span class="font-display font-extrabold tracking-[0.26em] text-sm sm:text-base">GREVIX</span>
+        </a>
+
+        <span class="hidden md:inline-block h-4 w-[1px] bg-current opacity-25"></span>
+
+        <div class="hidden lg:flex items-center gap-2 font-mono text-xs tracking-widest opacity-75">
+          <span id="hud-active-index" class="font-bold text-grevix-orange">01.</span>
+          <span class="opacity-40">[</span>
+          <span id="hud-active-label">HOME // ORBIT</span>
+          <span class="opacity-40">]</span>
+        </div>
+      </div>
+
+      <!-- Center: Main Navigation Links with Active Orange Indicator Dot -->
+      <nav class="hidden md:flex items-center gap-6 lg:gap-9 font-mono text-xs tracking-[0.18em]">
+        <button type="button" data-target="section-home" data-index="01." data-label="HOME // ORBIT" class="hud-nav-btn relative py-2 font-semibold transition-colors hover:text-grevix-orange">
+          HOME
+          <span class="nav-dot absolute left-1/2 -translate-x-1/2 -bottom-0.5 w-1.5 h-1.5 rounded-full bg-grevix-orange"></span>
+        </button>
+        <button type="button" data-target="section-hackathons" data-index="02." data-label="HACKATHONS // BEYOND LIMITS" class="hud-nav-btn relative py-2 font-semibold opacity-70 hover:opacity-100 transition-colors hover:text-grevix-orange">
+          HACKATHONS
+          <span class="nav-dot hidden absolute left-1/2 -translate-x-1/2 -bottom-0.5 w-1.5 h-1.5 rounded-full bg-grevix-orange"></span>
+        </button>
+        <button type="button" data-target="section-she-builds" data-index="02.B" data-label="SHE BUILDS // 3-MONTH PROGRAM" class="hud-nav-btn relative py-2 font-semibold opacity-90 hover:opacity-100 transition-colors text-grevix-orange flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-grevix-orange orbit-dot"></span>
+          SHE BUILDS
+          <span class="nav-dot hidden absolute left-1/2 -translate-x-1/2 -bottom-0.5 w-1.5 h-1.5 rounded-full bg-grevix-orange"></span>
+        </button>
+        <button type="button" data-target="section-community" data-index="03." data-label="COMMUNITY // NETWORK" class="hud-nav-btn relative py-2 font-semibold opacity-70 hover:opacity-100 transition-colors hover:text-grevix-orange">
+          COMMUNITY
+          <span class="nav-dot hidden absolute left-1/2 -translate-x-1/2 -bottom-0.5 w-1.5 h-1.5 rounded-full bg-grevix-orange"></span>
+        </button>
+        <button type="button" data-target="section-resources" data-index="04." data-label="INNOVATION LAB // RESOURCES" class="hud-nav-btn relative py-2 font-semibold opacity-70 hover:opacity-100 transition-colors hover:text-grevix-orange">
+          RESOURCES
+          <span class="nav-dot hidden absolute left-1/2 -translate-x-1/2 -bottom-0.5 w-1.5 h-1.5 rounded-full bg-grevix-orange"></span>
+        </button>
+        <button type="button" data-target="section-about" data-index="05." data-label="ABOUT // PARTNER" class="hud-nav-btn relative py-2 font-semibold opacity-70 hover:opacity-100 transition-colors hover:text-grevix-orange">
+          ABOUT
+          <span class="nav-dot hidden absolute left-1/2 -translate-x-1/2 -bottom-0.5 w-1.5 h-1.5 rounded-full bg-grevix-orange"></span>
+        </button>
+      </nav>
+
+      <!-- Right: Region Switcher, Submissions Drawer & JOIN CTA (Matching Mockup 3 Top-Right) -->
+      <div class="flex items-center gap-3">
+        <!-- Region / Orbit Selector -->
+        <button type="button" id="btn-region-cycle" class="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded border border-current/20 font-mono text-[11px] hover:border-grevix-orange transition" title="Switch Grevix Regional Node">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span id="region-code">GLOBAL // EN</span>
+        </button>
+
+        <!-- Saved Pitches & Activity Counter Button -->
+        <button type="button" id="btn-open-dashboard" class="relative px-3 py-1.5 border border-current/25 font-mono text-xs tracking-wider hover:border-grevix-orange transition flex items-center gap-1.5">
+          <span>MY ORBIT</span>
+          <span id="badge-submission-count" class="px-1.5 py-0.2 bg-grevix-orange text-white text-[10px] font-bold rounded-sm">2</span>
+        </button>
+
+        <!-- Angled JOIN Button matching Mockup 3 -->
+        <button type="button" id="btn-header-join" class="bg-black text-white hover:bg-grevix-orange transition-colors px-4 sm:px-5 py-2 font-mono text-xs font-bold tracking-[0.18em] flex items-center gap-2">
+          <span>JOIN</span>
+          <span>&rarr;</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button type="button" id="btn-mobile-menu" class="md:hidden p-2 border border-current/25" aria-label="Toggle Menu">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-nav-drawer" class="hidden md:hidden bg-[#111111] text-white border-b border-white/15 px-6 py-4 space-y-2 font-mono text-xs tracking-widest">
+      <button type="button" data-target="section-home" class="mobile-nav-item block w-full text-left py-2 hover:text-grevix-orange">01. // HOME</button>
+      <button type="button" data-target="section-hackathons" class="mobile-nav-item block w-full text-left py-2 hover:text-grevix-orange">02. // HACKATHONS</button>
+      <button type="button" data-target="section-she-builds" class="mobile-nav-item block w-full text-left py-2 text-grevix-orange font-bold">02.B // SHE BUILDS (3-MONTH FELLOWSHIP)</button>
+      <button type="button" data-target="section-community" class="mobile-nav-item block w-full text-left py-2 hover:text-grevix-orange">03. // COMMUNITY</button>
+      <button type="button" data-target="section-resources" class="mobile-nav-item block w-full text-left py-2 hover:text-grevix-orange">04. // INNOVATION LAB &amp; RESOURCES</button>
+      <button type="button" data-target="section-about" class="mobile-nav-item block w-full text-left py-2 hover:text-grevix-orange">05. // ABOUT &amp; HOST HACKATHON</button>
+    </div>
+  </header>
+
+  <!-- FIXED RIGHT-RAIL HUD TELEMETRY INDICATOR (01 — 05) -->
+  <aside class="hidden xl:flex fixed right-5 top-1/2 -translate-y-1/2 z-30 flex-col items-center gap-2 bg-[#EAE9E4]/85 backdrop-blur px-2 py-3 border border-black/20 rounded-sm shadow-sm">
+    <button type="button" data-target="section-home" class="rail-btn font-mono text-[11px] font-bold text-grevix-orange hover:scale-110 transition" title="01 Home">01</button>
+    <span class="w-[1px] h-5 bg-black/30"></span>
+    <button type="button" data-target="section-hackathons" class="rail-btn font-mono text-[11px] text-black/50 hover:text-grevix-orange transition" title="02 Hackathons">02</button>
+    <span class="w-[1px] h-5 bg-black/30"></span>
+    <button type="button" data-target="section-she-builds" class="rail-btn font-mono text-[11px] text-black/50 hover:text-grevix-orange transition" title="She Builds Spotlight">SB</button>
+    <span class="w-[1px] h-5 bg-black/30"></span>
+    <button type="button" data-target="section-community" class="rail-btn font-mono text-[11px] text-black/50 hover:text-grevix-orange transition" title="03 Community">03</button>
+    <span class="w-[1px] h-5 bg-black/30"></span>
+    <button type="button" data-target="section-resources" class="rail-btn font-mono text-[11px] text-black/50 hover:text-grevix-orange transition" title="04 Resources & Lab">04</button>
+    <span class="w-[1px] h-5 bg-black/30"></span>
+    <button type="button" data-target="section-about" class="rail-btn font-mono text-[11px] text-black/50 hover:text-grevix-orange transition" title="05 About">05</button>
+  </aside>
+
+  <!-- ===================================================================== -->
+  <!-- SECTION 01: HOME — LIGHT TECHNICAL HUD (Exact Match to Mockup 1)      -->
+  <!-- ===================================================================== -->
+  <section id="section-home" class="relative bg-[#E8E7E5] text-[#111111] hud-grid-light py-6 sm:py-10 px-3 sm:px-6 lg:px-10 border-b border-black/20">
+    <div class="max-w-[1400px] mx-auto relative border border-black/35 bg-[#E8E7E5] p-5 sm:p-8 lg:p-12 shadow-sm">
+
+      <!-- Corner HUD Chamfer Accents & Crosshairs -->
+      <div class="hidden sm:block absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-black"></div>
+      <div class="hidden sm:block absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-black"></div>
+      <div class="hidden sm:block absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-black"></div>
+      <div class="hidden sm:block absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-black"></div>
+
+      <!-- Top-left & Top-right HUD Technical Metadata -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pb-6 mb-4 border-b border-black/15 font-mono text-xs tracking-[0.2em] text-black/70">
+        <div class="flex items-center gap-3">
+          <span class="text-grevix-orange font-bold">01 .</span>
+          <span>|</span>
+          <span>[ GLOBAL HACKATHON PLATFORM ]</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="hidden sm:inline-flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-grevix-orange orbit-dot"></span>
+            <span>FEATURED LAUNCH: <strong class="text-black">SHE BUILDS (3-MONTH GIRLS INNOVATION)</strong></span>
+          </span>
+          <button type="button" id="btn-banner-shebuilds" class="underline decoration-grevix-orange underline-offset-4 font-bold text-black hover:text-grevix-orange">
+            VIEW PROGRAM &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Main 12-Column Hero Grid (Matching Mockup 1: Left Typography, Center Astronaut 01, Right Orbit + Satellite) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+
+        <!-- Left Column (5 cols): BUILD WHAT'S NEXT. -->
+        <div class="lg:col-span-5 space-y-6 relative z-10">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-black/5 border border-black/15 font-mono text-[11px] tracking-[0.22em] text-black/75">
+            <span>[ GLOBAL HACKATHON PLATFORM ]</span>
+          </div>
+
+          <h1 class="hero-display text-5xl sm:text-6xl xl:text-[76px] uppercase tracking-tight text-[#111111]">
+            <span class="block">BUILD</span>
+            <span class="block">WHAT’S</span>
+            <span class="block text-grevix-orange">NEXT.</span>
+          </h1>
+
+          <p class="font-mono text-xs sm:text-sm text-black/75 leading-relaxed max-w-md">
+            Explore hackathons, meet global builders, and turn your ideas into real-world impact. Home of the upcoming <strong class="text-black">She Builds</strong> 3-month open innovation fellowship.
+          </p>
+
+          <!-- Primary CTA Buttons: EXPLORE HACKATHONS -> & WATCH REEL -->
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <button type="button" id="btn-hero-explore" class="bg-[#111111] hover:bg-grevix-orange text-white font-mono text-xs font-bold tracking-[0.2em] px-6 py-4 transition-colors flex items-center gap-3 shadow-sm">
+              <span>EXPLORE HACKATHONS</span>
+              <span>&rarr;</span>
+            </button>
+
+            <button type="button" id="btn-watch-reel" class="group flex items-center gap-3 px-3 py-2 font-mono text-xs font-bold tracking-[0.18em] text-[#111111] hover:text-grevix-orange transition">
+              <span class="w-11 h-11 rounded-full border border-black/60 group-hover:border-grevix-orange group-hover:bg-grevix-orange group-hover:text-white flex items-center justify-center transition">
+                <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M6.5 5.5v9l7-4.5-7-4.5z"/></svg>
+              </span>
+              <span>WATCH REEL</span>
+            </button>
+          </div>
+
+          <!-- Bottom-Left Orbital Diagram + Vertical Stack (Matching Mockup 1 Bottom-Left) -->
+          <div class="pt-6 border-t border-black/15 flex items-center gap-6">
+            <!-- Orbital SVG Emblem -->
+            <div class="relative w-14 h-14 flex items-center justify-center">
+              <svg class="w-14 h-14 text-black/45" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1">
+                <circle cx="26" cy="30" r="18"/>
+                <ellipse cx="32" cy="30" rx="14" ry="18"/>
+                <circle cx="52" cy="24" r="2" fill="#111"/>
+                <circle cx="52" cy="36" r="2" fill="#111"/>
+              </svg>
+            </div>
+            <div class="font-mono text-[10px] leading-[1.45] tracking-[0.22em] text-black/75 uppercase">
+              <div class="text-black/40 mb-1">• • •</div>
+              <div>IDEAS</div>
+              <div>PEOPLE</div>
+              <div>TECH</div>
+              <div>COMMUNITY</div>
+              <div>IMPACT</div>
+              <div class="w-4 h-[1.5px] bg-black mt-1.5"></div>
+            </div>
+
+            <!-- Quick Launch Pill for She Builds Pitch -->
+            <div class="ml-auto">
+              <button type="button" id="btn-hero-pitch-cta" class="px-3.5 py-2.5 bg-white/80 hover:bg-grevix-orange hover:text-white border border-black/25 font-mono text-[11px] font-bold tracking-wider transition flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-grevix-orange"></span>
+                <span>PITCH FOR SHE BUILDS &rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center Column (4 cols): White-Armored Astronaut "01" (From Mockup 1) -->
+        <div class="lg:col-span-4 relative flex flex-col items-center justify-center">
+          <div class="relative w-full max-w-[360px] mx-auto">
+            <!-- Subtle Crosshair Markers Around Astronaut -->
+            <span class="crosshair text-black/35 absolute -top-2 left-4"></span>
+            <span class="crosshair text-black/35 absolute top-1/3 -right-2"></span>
+            <img
+              src="./public/assets/astronauts/astro_light.jpg"
+              alt="Grevix Unit 01 Astronaut"
+              class="w-full h-auto object-contain mx-auto blend-astronaut-light select-none"
+            />
+            <!-- Technical HUD Tag Overlay -->
+            <div class="mt-2 flex items-center justify-between font-mono text-[10px] tracking-[0.2em] text-black/60 border-t border-black/15 pt-2">
+              <span>UNIT // 01-DELTA</span>
+              <span class="text-grevix-orange font-bold">STATUS: ORBITAL READY</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column (3 cols): FOLLOW OUR ORBIT + Floating Satellite + Telemetry -->
+        <div class="lg:col-span-3 flex flex-col justify-between space-y-6 border-t lg:border-t-0 lg:border-l border-black/15 pt-6 lg:pt-0 lg:pl-6">
+          <!-- FOLLOW OUR ORBIT Social Box -->
+          <div class="space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-[2px] bg-grevix-orange"></span>
+              <h2 class="font-mono text-xs font-bold tracking-[0.22em] uppercase">FOLLOW OUR ORBIT</h2>
+            </div>
+            <p class="font-mono text-[11px] text-black/65 leading-relaxed">
+              Stay connected for hackathon drops, cohort shortlists &amp; lab updates.
+            </p>
+            <!-- Social Icons Row (LinkedIn, X, Instagram, Discord) -->
+            <div class="flex items-center gap-2.5 pt-1">
+              <button type="button" data-social="LinkedIn" class="social-orbit-btn w-10 h-10 border border-black/25 bg-white/70 hover:bg-black hover:text-white transition flex items-center justify-center font-bold text-sm" title="Grevix LinkedIn">
+                in
+              </button>
+              <button type="button" data-social="X (Twitter)" class="social-orbit-btn w-10 h-10 border border-black/25 bg-white/70 hover:bg-black hover:text-white transition flex items-center justify-center font-bold text-sm" title="Grevix on X">
+                &#120143;
+              </button>
+              <button type="button" data-social="Instagram" class="social-orbit-btn w-10 h-10 border border-black/25 bg-white/70 hover:bg-black hover:text-white transition flex items-center justify-center" title="Grevix Instagram">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+              </button>
+              <button type="button" data-social="Discord Community" class="social-orbit-btn w-10 h-10 border border-black/25 bg-white/70 hover:bg-black hover:text-white transition flex items-center justify-center" title="Join Grevix Discord">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.292a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Orbital Satellite Visual Module (From Mockup 1 Right) -->
+          <div class="relative py-2 flex flex-col items-center">
+            <img
+              src="./public/assets/astronauts/satellite.jpg"
+              alt="Grevix Orbital Telemetry Satellite"
+              class="w-full max-w-[230px] h-auto object-contain blend-astronaut-light satellite-float select-none"
+            />
+          </div>
+
+          <!-- Bottom-Right Metadata Columns: IDEAS PEOPLE TECH COMMUNITY IMPACT | FROM IDEAS TO IMPACT -->
+          <div class="flex items-end justify-between pt-2 border-t border-black/15 font-mono text-[10px] tracking-[0.2em] uppercase">
+            <div class="space-y-0.5 text-black/80">
+              <div class="w-3 h-[2px] bg-grevix-orange mb-1.5"></div>
+              <div>IDEAS</div>
+              <div>PEOPLE</div>
+              <div>TECH</div>
+              <div>COMMUNITY</div>
+              <div>IMPACT</div>
+              <div class="w-3 h-[2px] bg-grevix-orange mt-1.5"></div>
+            </div>
+            <div class="border-l border-black/30 pl-3 text-black/70 space-y-0.5">
+              <div>FROM</div>
+              <div>IDEAS</div>
+              <div>TO IMPACT</div>
+              <div class="w-3 h-[1.5px] bg-black mt-1"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- SECTION 02: HACKATHONS — DARK OBSIDIAN HUD (Exact Match to Mockup 2)  -->
+  <!-- ===================================================================== -->
+  <section id="section-hackathons" class="relative bg-[#050505] text-white hud-grid-dark py-12 sm:py-16 px-3 sm:px-6 lg:px-10 border-b border-white/15">
+    <div class="max-w-[1400px] mx-auto relative border border-white/20 bg-[#050505] p-5 sm:p-8 lg:p-12">
+
+      <!-- Top HUD Line with Orange Square Node on Vertical Axis (Matching Mockup 2) -->
+      <div class="hidden lg:block absolute top-0 left-[66%] w-[1px] h-28 bg-white/30">
+        <span class="absolute bottom-0 -left-1.5 w-3 h-3 bg-grevix-orange"></span>
+      </div>
+
+      <!-- Top Bar Metadata -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pb-8 border-b border-white/15 font-mono text-xs tracking-[0.2em] text-white/75">
+        <div class="flex items-center gap-3">
+          <span class="text-grevix-orange font-bold">02 .</span>
+          <span>|</span>
+          <span>[ GLOBAL HACKATHON PLATFORM ]</span>
+        </div>
+        <div class="flex items-center gap-2 text-[11px]">
+          <span class="w-2 h-2 rounded-full bg-grevix-orange orbit-dot"></span>
+          <span>NEXT FLAGSHIP LAUNCH: <strong class="text-white">SHE BUILDS — 3-MONTH OPEN INNOVATION</strong></span>
+        </div>
+      </div>
+
+      <!-- Main Dark Hero Grid (Left: HACK BEYOND LIMITS. | Right: Dark Silhouette Astronaut 01) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-6">
+
+        <!-- Left 7 Columns -->
+        <div class="lg:col-span-7 space-y-6 z-10">
+          <div class="font-mono text-xs tracking-[0.24em] text-white/70">
+            [ GLOBAL HACKATHON PLATFORM ]
+          </div>
+
+          <h2 class="hero-display text-5xl sm:text-6xl xl:text-[80px] uppercase tracking-tight">
+            <span class="block text-white">HACK</span>
+            <span class="block text-white">BEYOND</span>
+            <span class="block text-grevix-orange">LIMITS.</span>
+          </h2>
+
+          <p class="font-mono text-xs sm:text-sm text-white/75 leading-relaxed max-w-lg">
+            Join global hackathons, collaborate with brilliant minds, and turn bold ideas into real-world impact.
+          </p>
+
+          <!-- CTAs matching Mockup 2: EXPLORE HACKATHONS -> & WATCH HOW IT WORKS -->
+          <div class="flex flex-wrap items-center gap-5 pt-2">
+            <button type="button" id="btn-dark-explore-tracks" class="border border-white/50 hover:border-grevix-orange hover:bg-grevix-orange text-white font-mono text-xs font-bold tracking-[0.2em] px-6 py-4 transition flex items-center gap-3">
+              <span>EXPLORE HACKATHONS</span>
+              <span>&rarr;</span>
+            </button>
+
+            <button type="button" id="btn-watch-how-it-works" class="group flex items-center gap-3 font-mono text-xs font-bold tracking-[0.18em] text-white/90 hover:text-grevix-orange transition">
+              <span class="w-11 h-11 rounded-full border border-white/50 group-hover:border-grevix-orange flex items-center justify-center transition">
+                <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 20 20"><path d="M6.5 5.5v9l7-4.5-7-4.5z"/></svg>
+              </span>
+              <span>WATCH HOW IT WORKS</span>
+            </button>
+          </div>
+
+          <!-- Bottom Stats Bar Matching Mockup 2: 12+ GLOBAL EVENTS | 10K+ BUILDERS | 100+ IDEAS TO IMPACT -->
+          <div class="pt-10 mt-6 border-t border-white/15 grid grid-cols-3 gap-4 sm:gap-8 max-w-xl">
+            <div class="border-l-2 border-grevix-orange pl-3 sm:pl-4">
+              <div class="font-mono text-xl sm:text-2xl font-bold text-grevix-orange">12+</div>
+              <div class="font-mono text-[10px] sm:text-[11px] tracking-[0.18em] text-white/70 mt-1">GLOBAL EVENTS</div>
+            </div>
+            <div class="border-l border-white/25 pl-3 sm:pl-4">
+              <div class="font-mono text-xl sm:text-2xl font-bold text-grevix-orange">10K+</div>
+              <div class="font-mono text-[10px] sm:text-[11px] tracking-[0.18em] text-white/70 mt-1">BUILDERS</div>
+            </div>
+            <div class="border-l border-white/25 pl-3 sm:pl-4">
+              <div class="font-mono text-xl sm:text-2xl font-bold text-grevix-orange">100+</div>
+              <div class="font-mono text-[10px] sm:text-[11px] tracking-[0.18em] text-white/70 mt-1">IDEAS TO IMPACT</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right 5 Columns: Dark Rim-Lit Astronaut + Right Metadata Stack -->
+        <div class="lg:col-span-5 relative flex items-center justify-between">
+          <span class="crosshair text-white/30 absolute left-0 top-1/2"></span>
+
+          <div class="w-full max-w-[340px] mx-auto">
+            <img
+              src="./public/assets/astronauts/astro_dark.jpg"
+              alt="Grevix Deep Space Astronaut"
+              class="w-full h-auto object-contain blend-astronaut-dark select-none"
+            />
+          </div>
+
+          <!-- Right Vertical Metadata matching Mockup 2 -->
+          <div class="hidden sm:flex flex-col justify-between items-end h-[360px] font-mono text-[10px] tracking-[0.22em] text-white/70">
+            <div class="space-y-1 text-left">
+              <div>IDEAS</div>
+              <div>PEOPLE</div>
+              <div>TECH</div>
+              <div>COMMUNITY</div>
+              <div>IMPACT</div>
+              <div class="w-4 h-[1.5px] bg-white/50 mt-2"></div>
+            </div>
+
+            <div class="text-right">
+              <div class="text-[9px] text-white/50 mb-1">NEXT HACKATHON</div>
+              <div class="flex items-center gap-1.5 text-white font-bold">
+                <span class="w-2 h-2 rounded-full bg-grevix-orange"></span>
+                <span>SHE BUILDS // OPEN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE GLOBAL HACKATHONS & PROGRAMS DIRECTORY (With Live Filtering) -->
+      <div id="hackathons-directory" class="mt-14 pt-10 border-t border-white/15">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div>
+            <div class="font-mono text-[11px] tracking-[0.22em] text-grevix-orange uppercase">// ACTIVE &amp; UPCOMING MISSIONS</div>
+            <h3 class="font-display text-2xl sm:text-3xl font-bold text-white mt-1">GREVIX EVENT &amp; FELLOWSHIP PIPELINE</h3>
+          </div>
+          <!-- Filter Buttons -->
+          <div class="flex flex-wrap gap-2 font-mono text-xs">
+            <button type="button" data-filter="all" class="hack-filter-btn px-3.5 py-2 bg-grevix-orange text-white font-bold tracking-wider">ALL MISSIONS (4)</button>
+            <button type="button" data-filter="fellowship" class="hack-filter-btn px-3.5 py-2 bg-white/5 hover:bg-white/15 text-white/80 border border-white/15 tracking-wider">FELLOWSHIP (1)</button>
+            <button type="button" data-filter="hackathon" class="hack-filter-btn px-3.5 py-2 bg-white/5 hover:bg-white/15 text-white/80 border border-white/15 tracking-wider">HACKATHONS (2)</button>
+            <button type="button" data-filter="sprint" class="hack-filter-btn px-3.5 py-2 bg-white/5 hover:bg-white/15 text-white/80 border border-white/15 tracking-wider">OPEN SOURCE (1)</button>
+          </div>
+        </div>
+
+        <div id="hackathon-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Card 1: SHE BUILDS (FLAGSHIP SPOTLIGHT) -->
+          <div data-category="fellowship" class="hackathon-card relative border-2 border-grevix-orange bg-[#101012] p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 font-mono text-[11px] tracking-widest">
+                <span class="px-2.5 py-1 bg-grevix-orange text-white font-bold">FLAGSHIP // GIRLS EXCLUSIVELY</span>
+                <span class="text-white/60">DURATION: 3 MONTHS</span>
+              </div>
+              <h4 class="font-display text-2xl font-extrabold text-white mt-4 flex items-center gap-3">
+                <span>SHE BUILDS BY GREVIX</span>
+                <span class="text-xs font-mono px-2 py-0.5 border border-grevix-pink text-grevix-pink">TOP 2 SHORTLISTED</span>
+              </h4>
+              <p class="text-sm text-white/75 mt-2 leading-relaxed">
+                A 3-month open innovation program exclusively for girls. Anyone can pitch in Week 1 with total creative freedom; the 2 most promising ideas are shortlisted to build full teams, access the Grevix Innovation Lab, and launch with shared ownership.
+              </p>
+              <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-white/10 font-mono text-[11px]">
+                <div>
+                  <span class="text-white/45 block">MONTH 01</span>
+                  <span class="text-white font-semibold">Explore &amp; Shortlist 2</span>
+                </div>
+                <div>
+                  <span class="text-white/45 block">MONTH 02</span>
+                  <span class="text-white font-semibold">Team &amp; Innovation Lab</span>
+                </div>
+                <div>
+                  <span class="text-white/45 block">MONTH 03</span>
+                  <span class="text-white font-semibold">Test &amp; Showcase</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 pt-4 border-t border-white/15 flex flex-wrap items-center justify-between gap-3">
+              <button type="button" data-scroll-to="section-she-builds" class="scroll-trigger font-mono text-xs font-bold tracking-wider text-grevix-orange hover:underline">
+                INSPECT 3-MONTH ARCHITECTURE &rarr;
+              </button>
+              <button type="button" data-open-pitch="She Builds — Week 1 Idea Creator" class="open-pitch-modal-btn px-4 py-2 bg-grevix-orange hover:bg-grevix-orangeHover text-white font-mono text-xs font-bold tracking-wider transition">
+                SUBMIT WEEK 1 IDEA &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: GREVIX ORBITAL AI HACKATHON -->
+          <div data-category="hackathon" class="hackathon-card border border-white/20 bg-[#0B0B0D] p-6 flex flex-col justify-between hover:border-white/45 transition">
+            <div>
+              <div class="flex items-center justify-between gap-2 font-mono text-[11px] tracking-widest">
+                <span class="px-2.5 py-1 bg-white/10 text-white">GLOBAL HACKATHON // AI &amp; SYSTEMS</span>
+                <span class="text-grevix-orange">48-HOUR SPRINT</span>
+              </div>
+              <h4 class="font-display text-2xl font-bold text-white mt-4">ORBITAL NEXUS // AI &amp; INFRASTRUCTURE</h4>
+              <p class="text-sm text-white/70 mt-2 leading-relaxed">
+                Build autonomous developer workflows, multi-agent systems, and low-latency edge deployments alongside Grevix mentors and partner engineers.
+              </p>
+              <div class="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-white/10 font-mono text-[11px]">
+                <div>
+                  <span class="text-white/45 block">MODE</span>
+                  <span class="text-white font-semibold">Hybrid + Campus</span>
+                </div>
+                <div>
+                  <span class="text-white/45 block">TEAM SIZE</span>
+                  <span class="text-white font-semibold">2 – 4 Builders</span>
+                </div>
+                <div>
+                  <span class="text-white/45 block">LAB ACCESS</span>
+                  <span class="text-white font-semibold">Compute Credits</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-6 pt-4 border-t border-white/15 flex items-center justify-between">
+              <span class="font-mono text-xs text-white/60">STATUS: REGISTRATION OPEN</span>
+              <button type="button" data-open-pitch="Orbital Nexus AI Hackathon" class="open-pitch-modal-btn px-4 py-2 border border-white/30 hover:border-grevix-orange hover:bg-grevix-orange text-white font-mono text-xs font-bold tracking-wider transition">
+                REGISTER TEAM &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3: OPEN PROTOCOL SEASON -->
+          <div data-category="sprint" class="hackathon-card border border-white/20 bg-[#0B0B0D] p-6 flex flex-col justify-between hover:border-white/45 transition">
+            <div>
+              <div class="flex items-center justify-between gap-2 font-mono text-[11px] tracking-widest">
+                <span class="px-2.5 py-1 bg-white/10 text-white">OPEN SOURCE // CAMPUS &amp; GLOBAL</span>
+                <span class="text-white/60">4 WEEKS</span>
+              </div>
+              <h4 class="font-display text-2xl font-bold text-white mt-4">GREVIX OPEN SOURCE SPRINT</h4>
+              <p class="text-sm text-white/70 mt-2 leading-relaxed">
+                Contribute production pull requests to emerging developer tools, compilers, and community repositories with code reviews from senior maintainers.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-white/15 flex items-center justify-between">
+              <span class="font-mono text-xs text-white/60">18 ACTIVE REPOSITORIES</span>
+              <button type="button" data-open-pitch="Grevix Open Source Sprint" class="open-pitch-modal-btn px-4 py-2 border border-white/30 hover:border-grevix-orange hover:bg-grevix-orange text-white font-mono text-xs font-bold tracking-wider transition">
+                APPLY AS CONTRIBUTOR &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 4: HARDWARE & ROBOTICS BUILDATHON -->
+          <div data-category="hackathon" class="hackathon-card border border-white/20 bg-[#0B0B0D] p-6 flex flex-col justify-between hover:border-white/45 transition">
+            <div>
+              <div class="flex items-center justify-between gap-2 font-mono text-[11px] tracking-widest">
+                <span class="px-2.5 py-1 bg-white/10 text-white">DEEP TECH // EMBEDDED &amp; IOT</span>
+                <span class="text-white/60">72 HOURS</span>
+              </div>
+              <h4 class="font-display text-2xl font-bold text-white mt-4">FRONTIER LABS // HARDWARE HACK</h4>
+              <p class="text-sm text-white/70 mt-2 leading-relaxed">
+                Prototype physical computing, robotics, and sensor-driven systems inside the Grevix Innovation Lab with rapid prototyping hardware.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-white/15 flex items-center justify-between">
+              <span class="font-mono text-xs text-white/60">LAB BENCH SLOTS: 24</span>
+              <button type="button" data-open-pitch="Frontier Labs Hardware Hack" class="open-pitch-modal-btn px-4 py-2 border border-white/30 hover:border-grevix-orange hover:bg-grevix-orange text-white font-mono text-xs font-bold tracking-wider transition">
+                RESERVE LAB SLOT &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- SECTION 02.B: FLAGSHIP EVENT COMMAND CENTER — "SHE BUILDS"            -->
+  <!-- Built inside the Astronaut HUD Design System + All Program Specifics  -->
+  <!-- ===================================================================== -->
+  <section id="section-she-builds" class="relative bg-[#0D0D10] text-white hud-grid-dark py-14 sm:py-20 px-3 sm:px-6 lg:px-10 border-b border-white/20">
+    <div class="max-w-[1400px] mx-auto border border-white/25 bg-[#111115] p-5 sm:p-8 lg:p-12 relative">
+
+      <!-- Top Mission Header Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-white/15 font-mono text-xs tracking-[0.2em]">
+        <div class="flex items-center gap-3">
+          <span class="px-2.5 py-1 bg-grevix-orange text-white font-bold">MISSION 02.B</span>
+          <span class="text-white/80">[ SHE BUILDS // 3-MONTH OPEN INNOVATION PROGRAM ]</span>
+        </div>
+        <div class="flex items-center gap-3 text-grevix-pink">
+          <span>EXCLUSIVELY FOR GIRLS</span>
+          <span>•</span>
+          <span>A FEW WHO BUILDS WHAT'S NEXT</span>
+        </div>
+      </div>
+
+      <!-- Hero Split for She Builds -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pt-8">
+        <!-- Left 7 Columns: Program Pitch & Core Selection Mechanics -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2.5 px-3 py-1.5 border border-grevix-pink/40 bg-grevix-pink/10 font-mono text-xs text-grevix-pink">
+            <span class="w-2 h-2 rounded-full bg-grevix-pink orbit-dot"></span>
+            <span>OPEN INNOVATION FELLOWSHIP // ANYONE CAN SUBMIT &bull; ONLY 2 SHORTLISTED</span>
+          </div>
+
+          <div class="space-y-2">
+            <div class="font-pixel text-3xl sm:text-5xl text-white tracking-tight leading-tight">
+              She <span class="text-grevix-pink">Builds</span>
+            </div>
+            <div class="font-mono text-xs sm:text-sm tracking-[0.28em] text-white/70 uppercase pt-1">
+              BY <strong class="text-white">GREVIX</strong> &mdash; A 3 MONTH OPEN INNOVATION PROGRAM FOR GIRLS ONLY
+            </div>
+          </div>
+
+          <p class="text-white/80 text-sm sm:text-base leading-relaxed">
+            An environment where girls take the lead on their ideas, make critical engineering and product decisions, and turn ambitious concepts into real-world projects with the full backing of <strong class="text-white">Grevix</strong>.
+          </p>
+
+          <!-- Key Program Funnel Metrics (HUD Cards) -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div class="border border-white/15 bg-black/50 p-4">
+              <div class="font-mono text-[10px] tracking-widest text-white/50">WEEK 1 INTAKE</div>
+              <div class="font-display text-2xl font-extrabold text-white mt-1">OPEN TO ALL</div>
+              <div class="font-mono text-[11px] text-grevix-orange mt-1">100% Creative Freedom</div>
+            </div>
+            <div class="border border-grevix-orange bg-grevix-orange/10 p-4">
+              <div class="font-mono text-[10px] tracking-widest text-grevix-orange">END OF WEEK 1</div>
+              <div class="font-display text-2xl font-extrabold text-white mt-1">ONLY 2 IDEAS</div>
+              <div class="font-mono text-[11px] text-white/80 mt-1">Shortlisted Flagships</div>
+            </div>
+            <div class="border border-white/15 bg-black/50 p-4">
+              <div class="font-mono text-[10px] tracking-widest text-white/50">PROGRAM LENGTH</div>
+              <div class="font-display text-2xl font-extrabold text-white mt-1">3 MONTHS</div>
+              <div class="font-mono text-[11px] text-grevix-pink mt-1">Explore &bull; Build &bull; Showcase</div>
+            </div>
+            <div class="border border-white/15 bg-black/50 p-4">
+              <div class="font-mono text-[10px] tracking-widest text-white/50">IP &amp; OWNERSHIP</div>
+              <div class="font-display text-2xl font-extrabold text-white mt-1">SHARED IP</div>
+              <div class="font-mono text-[11px] text-white/80 mt-1">Creator + Grevix Credit</div>
+            </div>
+          </div>
+
+          <!-- Action Buttons: Submit Idea (Week 1) | Join Builder Team (Month 2) | View Official Posters -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="button" id="btn-shebuilds-submit-idea" class="bg-grevix-orange hover:bg-grevix-orangeHover text-white font-mono text-xs font-bold tracking-[0.18em] px-6 py-4 transition flex items-center gap-3">
+              <span>SUBMIT WEEK 1 IDEA</span>
+              <span>&rarr;</span>
+            </button>
+            <button type="button" id="btn-shebuilds-join-team" class="border border-white/35 hover:border-grevix-pink hover:text-grevix-pink text-white font-mono text-xs font-bold tracking-[0.18em] px-5 py-4 transition">
+              APPLY FOR MONTH 2 BUILD TEAM
+            </button>
+            <button type="button" id="btn-shebuilds-posters" class="border border-white/20 hover:border-white text-white/80 hover:text-white font-mono text-xs tracking-[0.15em] px-4 py-4 transition">
+              OFFICIAL POSTER GALLERY (5)
+            </button>
+          </div>
+        </div>
+
+        <!-- Right 5 Columns: Interactive 3-Month Phase Selector & Telemetry Card -->
+        <div class="lg:col-span-5 border border-white/20 bg-[#08080A] p-5 sm:p-6 space-y-5">
+          <div class="flex items-center justify-between border-b border-white/15 pb-3 font-mono text-xs">
+            <span class="text-grevix-orange font-bold">// INTERACTIVE 3-MONTH ROADMAP</span>
+            <span class="text-white/50">CLICK PHASE TO INSPECT</span>
+          </div>
+
+          <!-- Phase Selector Tabs -->
+          <div class="grid grid-cols-3 gap-2 font-mono text-xs">
+            <button type="button" data-phase="1" class="phase-tab-btn py-2.5 px-2 border border-grevix-orange bg-grevix-orange text-white font-bold text-center transition">
+              &#9633; MONTH 01<br><span class="text-[10px] font-normal opacity-90">EXPLORE</span>
+            </button>
+            <button type="button" data-phase="2" class="phase-tab-btn py-2.5 px-2 border border-white/20 bg-white/5 text-white/75 hover:border-white/50 text-center transition">
+              &#9675; MONTH 02<br><span class="text-[10px] font-normal opacity-80">BUILD &amp; LAB</span>
+            </button>
+            <button type="button" data-phase="3" class="phase-tab-btn py-2.5 px-2 border border-white/20 bg-white/5 text-white/75 hover:border-white/50 text-center transition">
+              &#9651; MONTH 03<br><span class="text-[10px] font-normal opacity-80">SHOWCASE</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Phase Detail Container -->
+          <div id="phase-detail-panel" class="space-y-4 pt-1">
+            <!-- Populated dynamically via JS, pre-rendered with Month 1 -->
+            <div class="flex items-center justify-between font-mono text-xs text-grevix-pink">
+              <span>PHASE 01 // SHAPE YOUR IDEA</span>
+              <span>WEEKS 01 – 04</span>
+            </div>
+            <h4 class="font-display text-xl font-bold text-white">
+              Week 1 Total Exploration &rarr; Top 2 Shortlist &rarr; Concept Refinement
+            </h4>
+            <div class="space-y-3 text-xs sm:text-sm text-white/80 leading-relaxed">
+              <div class="p-3 border-l-2 border-grevix-orange bg-white/5">
+                <strong class="text-white block font-mono text-xs mb-1">WEEK 1: COMPLETE CREATIVE FREEDOM &amp; SHORTLISTING</strong>
+                Anyone can submit their ideas. Idea creators have complete freedom to explore what they want to build and how they want to approach it. By the end of Week 1, Grevix selects the <strong class="text-grevix-orange">2 most promising ideas</strong>.
+              </div>
+              <div class="p-3 border-l-2 border-grevix-pink bg-white/5">
+                <strong class="text-white block font-mono text-xs mb-1">WEEKS 2–4: REFINE CONCEPTS &amp; PLAN APPROACH</strong>
+                For the rest of the first month, the 2 shortlisted idea creators refine their concepts, lock in technical architecture, and plan their execution roadmap.
+              </div>
+            </div>
+          </div>
+
+          <!-- Shared Ownership & Governance Charter Box -->
+          <div class="pt-4 border-t border-white/15 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-sm bg-grevix-orange/20 border border-grevix-orange flex items-center justify-center shrink-0 font-mono text-xs font-bold text-grevix-orange">
+              IP
+            </div>
+            <div class="text-xs text-white/75 leading-relaxed">
+              <strong class="text-white font-mono uppercase tracking-wider block">Shared Project Ownership &amp; Proper Credit</strong>
+              Project ownership is shared between the idea creator and Grevix under clearly defined terms, guaranteeing proper credit and attribution for every builder involved.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FULL 3-MONTH ARCHITECTURAL MATRIX (Always Scannable Side-by-Side) -->
+      <div class="mt-12 pt-10 border-t border-white/15">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
+          <div class="font-mono text-xs tracking-[0.2em] text-grevix-orange uppercase">
+            // COMPLETE PROGRAM PROTOCOL &mdash; FROM OPEN SUBMISSION TO INDUSTRY SHOWCASE
+          </div>
+          <div class="font-mono text-xs text-white/60">
+            IDEAS &bull; PEOPLE &bull; POSSIBILITIES &bull; REAL IMPACT
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- Stage 1A: Week 1 -->
+          <div class="border border-white/20 bg-black/60 p-5 relative">
+            <div class="flex items-center justify-between font-mono text-xs text-grevix-orange mb-2">
+              <span>STAGE 01.A // WEEK 1</span>
+              <span>&#9633;</span>
+            </div>
+            <h5 class="font-display font-bold text-lg text-white">Open Idea Exploration &amp; Top 2 Selection</h5>
+            <p class="text-xs text-white/70 mt-2 leading-relaxed">
+              Open to all girls. Complete freedom to explore ideas, define what to build, and choose the technical approach. Ends with shortlisting the <strong class="text-white">2 most promising ideas</strong>.
+            </p>
+            <div class="mt-4 pt-3 border-t border-white/10 font-mono text-[11px] text-grevix-pink">
+              OUTPUT: 2 Flagship Projects Selected
+            </div>
+          </div>
+
+          <!-- Stage 1B: Weeks 2-4 -->
+          <div class="border border-white/20 bg-black/60 p-5 relative">
+            <div class="flex items-center justify-between font-mono text-xs text-grevix-orange mb-2">
+              <span>STAGE 01.B // WEEKS 2–4</span>
+              <span>&#9633;</span>
+            </div>
+            <h5 class="font-display font-bold text-lg text-white">Concept Refinement &amp; Execution Blueprint</h5>
+            <p class="text-xs text-white/70 mt-2 leading-relaxed">
+              The 2 selected creators spend the rest of Month 1 refining their core concepts, validating technical feasibility, and planning their engineering approach and role requirements.
+            </p>
+            <div class="mt-4 pt-3 border-t border-white/10 font-mono text-[11px] text-grevix-pink">
+              OUTPUT: Validated Architecture &amp; Spec
+            </div>
+          </div>
+
+          <!-- Stage 2: Month 2 -->
+          <div class="border border-white/20 bg-black/60 p-5 relative">
+            <div class="flex items-center justify-between font-mono text-xs text-grevix-orange mb-2">
+              <span>STAGE 02 // MONTH 2</span>
+              <span>&#9675;</span>
+            </div>
+            <h5 class="font-display font-bold text-lg text-white">Team Formation, Build &amp; Grevix Innovation Lab</h5>
+            <p class="text-xs text-white/70 mt-2 leading-relaxed">
+              Creators build their teams and begin active development with full access to the <strong class="text-white">Grevix Innovation Lab</strong>: 1-on-1 mentorship, collaboration with industry professionals &amp; engineers, and company connections.
+            </p>
+            <div class="mt-4 pt-3 border-t border-white/10 font-mono text-[11px] text-grevix-pink">
+              OUTPUT: Working Core Product + Lab Network
+            </div>
+          </div>
+
+          <!-- Stage 3: Month 3 -->
+          <div class="border border-white/20 bg-black/60 p-5 relative">
+            <div class="flex items-center justify-between font-mono text-xs text-grevix-orange mb-2">
+              <span>STAGE 03 // MONTH 3</span>
+              <span>&#9651;</span>
+            </div>
+            <h5 class="font-display font-bold text-lg text-white">Improve, Rigorous Testing &amp; Final Showcase</h5>
+            <p class="text-xs text-white/70 mt-2 leading-relaxed">
+              Dedicated to improving performance, user testing, security &amp; edge-case hardening, and showcasing what the teams have built to partner companies and the community.
+            </p>
+            <div class="mt-4 pt-3 border-t border-white/10 font-mono text-[11px] text-grevix-pink">
+              OUTPUT: Public Launch + Shared Ownership
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLLAPSIBLE / INTERACTIVE OFFICIAL EVENT POSTERS BAR (Keeping the 5 Girl Posters accessible as Event Media) -->
+      <div id="she-builds-poster-strip" class="mt-10 pt-8 border-t border-white/15">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-5">
+          <div>
+            <span class="font-mono text-[11px] tracking-[0.2em] text-grevix-pink uppercase">// OFFICIAL CAMPAIGN ARTWORK ARCHIVE</span>
+            <h4 class="font-display text-lg font-bold text-white">SHE BUILDS — EVENT POSTER SERIES (CLICK ANY POSTER TO INSPECT FULL-RES)</h4>
+          </div>
+          <button type="button" id="btn-toggle-posters" class="px-3.5 py-1.5 border border-white/25 font-mono text-xs text-white/80 hover:border-grevix-orange hover:text-white transition">
+            HIDE / EXPAND POSTERS
+          </button>
+        </div>
+
+        <div id="posters-grid-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          <button type="button" data-poster-idx="0" class="poster-card group text-left border border-white/15 bg-black/40 p-2 hover:border-grevix-pink transition">
+            <div class="overflow-hidden aspect-[2/3] bg-black">
+              <img src="./public/assets/posters/she_builds_poster_1.jpg" alt="She Builds Poster 01 - Horizon Rooftop" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"/>
+            </div>
+            <div class="mt-2 font-mono text-[10px] text-white/75 flex justify-between">
+              <span>POSTER // 01</span>
+              <span class="text-grevix-pink">ROOFTOP HORIZON</span>
+            </div>
+          </button>
+
+          <button type="button" data-poster-idx="1" class="poster-card group text-left border border-white/15 bg-black/40 p-2 hover:border-grevix-pink transition">
+            <div class="overflow-hidden aspect-[2/3] bg-black">
+              <img src="./public/assets/posters/she_builds_poster_2.jpg" alt="She Builds Poster 02 - Coastal Ride" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"/>
+            </div>
+            <div class="mt-2 font-mono text-[10px] text-white/75 flex justify-between">
+              <span>POSTER // 02</span>
+              <span class="text-grevix-pink">COASTAL JOURNEY</span>
+            </div>
+          </button>
+
+          <button type="button" data-poster-idx="2" class="poster-card group text-left border border-white/15 bg-black/40 p-2 hover:border-grevix-pink transition">
+            <div class="overflow-hidden aspect-[2/3] bg-black">
+              <img src="./public/assets/posters/she_builds_poster_3.jpg" alt="She Builds Poster 03 - Evening Lantern" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"/>
+            </div>
+            <div class="mt-2 font-mono text-[10px] text-white/75 flex justify-between">
+              <span>POSTER // 03</span>
+              <span class="text-grevix-pink">TWILIGHT SPARK</span>
+            </div>
+          </button>
+
+          <button type="button" data-poster-idx="3" class="poster-card group text-left border border-white/15 bg-black/40 p-2 hover:border-grevix-pink transition">
+            <div class="overflow-hidden aspect-[2/3] bg-black">
+              <img src="./public/assets/posters/she_builds_poster_4.jpg" alt="She Builds Poster 04 - Court Rally" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"/>
+            </div>
+            <div class="mt-2 font-mono text-[10px] text-white/75 flex justify-between">
+              <span>POSTER // 04</span>
+              <span class="text-grevix-pink">TEAM RALLY</span>
+            </div>
+          </button>
+
+          <button type="button" data-poster-idx="4" class="poster-card group text-left border border-white/15 bg-black/40 p-2 hover:border-grevix-pink transition">
+            <div class="overflow-hidden aspect-[2/3] bg-black">
+              <img src="./public/assets/posters/she_builds_poster_5.jpg" alt="She Builds Poster 05 - Late Night Code" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"/>
+            </div>
+            <div class="mt-2 font-mono text-[10px] text-white/75 flex justify-between">
+              <span>POSTER // 05</span>
+              <span class="text-grevix-pink">MIDNIGHT BUILDER</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- SECTION 03: COMMUNITY — 3D PERSPECTIVE CORRIDOR (Exact Match Mockup 3) -->
+  <!-- ===================================================================== -->
+  <section id="section-community" class="relative bg-[#F5F4EE] text-[#111111] py-12 sm:py-16 px-3 sm:px-6 lg:px-10 border-b border-black/25">
+    <div class="max-w-[1400px] mx-auto border border-black/35 bg-[#F5F4EE] overflow-hidden shadow-sm">
+
+      <!-- Top Header Strip Inside Community Frame -->
+      <div class="px-5 sm:px-8 py-4 border-b border-black/20 flex flex-wrap items-center justify-between gap-4 font-mono text-xs tracking-[0.2em]">
+        <div class="flex items-center gap-3">
+          <span class="text-grevix-orange font-bold">03 .</span>
+          <span class="px-1.5 py-0.5 border border-black/30 text-[10px]">[ &ndash; ]</span>
+          <span class="font-bold">COMMUNITY // GLOBAL NETWORK OF CURIOUS BUILDERS</span>
+        </div>
+        <div class="text-black/65">
+          BUILD &bull; COLLABORATE &bull; LEARN &bull; SHIP
+        </div>
+      </div>
+
+      <!-- Main Visual Corridor + Side HUD Columns (Matching Mockup 3) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 relative">
+
+        <!-- Left Narrow Technical Column -->
+        <div class="hidden lg:flex lg:col-span-1 border-r border-black/15 p-4 flex-col justify-between font-mono text-[10px] tracking-[0.2em] uppercase text-black/75">
+          <div class="space-y-1">
+            <div class="text-black font-bold">[</div>
+            <div>IDEAS</div>
+            <div>PEOPLE</div>
+            <div>CODE</div>
+            <div>IMPACT</div>
+            <div class="w-3 h-[2px] bg-grevix-orange mt-1"></div>
+          </div>
+
+          <div class="my-auto py-8 flex justify-center">
+            <div class="w-[1px] h-32 bg-black/30 relative">
+              <span class="w-2 h-2 rounded-full bg-black absolute top-1/2 -left-[3.5px]"></span>
+            </div>
+          </div>
+
+          <div class="space-y-0.5 text-[9px] leading-snug">
+            <div class="text-grevix-orange font-bold">//</div>
+            <div>A GLOBAL</div>
+            <div>NETWORK</div>
+            <div>OF CURIOUS</div>
+            <div>BUILDERS.</div>
+            <div class="w-3 h-[2px] bg-grevix-orange mt-1"></div>
+          </div>
+        </div>
+
+        <!-- Center 10 Columns: 3D Perspective "COMMUNITY" Black Hole Corridor + 4 Interactive Pillar Cards -->
+        <div class="lg:col-span-10 p-4 sm:p-8 flex flex-col justify-between">
+          <!-- Full 3D Perspective Artwork from Mockup 3 -->
+          <div class="relative w-full overflow-hidden border border-black/15 bg-[#F5F4EE]">
+            <img
+              src="./public/assets/astronauts/comm_art.jpg"
+              alt="Grevix Community Perspective Corridor and Singularity"
+              class="w-full h-auto object-cover select-none"
+            />
+          </div>
+
+          <!-- 4 Interactive Pillar Tiles at Bottom of Corridor (01 CONNECT, 02 LEARN, 03 COLLABORATE, 04 GROW) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+            <button type="button" data-pillar="01" class="community-pillar-card group text-left border-2 border-black bg-white p-5 hover:bg-black hover:text-white transition relative">
+              <div class="flex items-center justify-between font-mono text-sm font-bold text-grevix-orange">
+                <span>01</span>
+                <span class="text-xs opacity-60 group-hover:opacity-100">&nearr;</span>
+              </div>
+              <div class="font-display font-extrabold text-lg tracking-wide mt-2 uppercase">CONNECT</div>
+              <div class="font-mono text-[11px] opacity-75 mt-1 uppercase leading-relaxed">
+                MEET BUILDERS<br>WORLDWIDE
+              </div>
+              <div class="mt-4 flex items-center justify-between font-mono text-[10px] tracking-widest pt-2 border-t border-current/15">
+                <span>42 CAMPUS NODES</span>
+                <span>&rarr;</span>
+              </div>
+            </button>
+
+            <button type="button" data-pillar="02" class="community-pillar-card group text-left border border-black/40 bg-white/80 p-5 hover:bg-black hover:text-white hover:border-black transition relative">
+              <div class="flex items-center justify-between font-mono text-sm font-bold text-grevix-orange">
+                <span>02</span>
+                <span class="text-xs opacity-60 group-hover:opacity-100">&nearr;</span>
+              </div>
+              <div class="font-display font-extrabold text-lg tracking-wide mt-2 uppercase">LEARN</div>
+              <div class="font-mono text-[11px] opacity-75 mt-1 uppercase leading-relaxed">
+                DISCUSSIONS<br>&amp; EVENTS
+              </div>
+              <div class="mt-4 flex items-center justify-between font-mono text-[10px] tracking-widest pt-2 border-t border-current/15">
+                <span>WEEKLY DEEP DIVES</span>
+                <span>&rarr;</span>
+              </div>
+            </button>
+
+            <button type="button" data-pillar="03" class="community-pillar-card group text-left border border-black/40 bg-white/80 p-5 hover:bg-black hover:text-white hover:border-black transition relative">
+              <div class="flex items-center justify-between font-mono text-sm font-bold text-grevix-orange">
+                <span>03</span>
+                <span class="text-xs opacity-60 group-hover:opacity-100">&nearr;</span>
+              </div>
+              <div class="font-display font-extrabold text-lg tracking-wide mt-2 uppercase">COLLABORATE</div>
+              <div class="font-mono text-[11px] opacity-75 mt-1 uppercase leading-relaxed">
+                FIND TEAMMATES<br>&amp; BUILD
+              </div>
+              <div class="mt-4 flex items-center justify-between font-mono text-[10px] tracking-widest pt-2 border-t border-current/15">
+                <span>TEAM MATCHMAKER</span>
+                <span>&rarr;</span>
+              </div>
+            </button>
+
+            <button type="button" data-pillar="04" class="community-pillar-card group text-left border border-black/40 bg-white/80 p-5 hover:bg-black hover:text-white hover:border-black transition relative">
+              <div class="flex items-center justify-between font-mono text-sm font-bold text-grevix-orange">
+                <span>04</span>
+                <span class="text-xs opacity-60 group-hover:opacity-100">&nearr;</span>
+              </div>
+              <div class="font-display font-extrabold text-lg tracking-wide mt-2 uppercase">GROW</div>
+              <div class="font-mono text-[11px] opacity-75 mt-1 uppercase leading-relaxed">
+                MENTORSHIP &amp;<br>OPPORTUNITIES
+              </div>
+              <div class="mt-4 flex items-center justify-between font-mono text-[10px] tracking-widest pt-2 border-t border-current/15">
+                <span>INNOVATION LAB</span>
+                <span>&rarr;</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Dynamic Community Pillar Spotlight Drawer -->
+          <div id="community-pillar-detail" class="mt-5 p-5 border border-black/25 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div id="pillar-detail-tag" class="font-mono text-[11px] font-bold text-grevix-orange tracking-widest">PILLAR 01 // CONNECT — GLOBAL BUILDER GRAPH</div>
+              <div id="pillar-detail-title" class="font-display text-lg font-bold text-black">Connect with student founders, systems engineers, and designers across chapters.</div>
+              <p id="pillar-detail-desc" class="text-xs text-black/70">Join verified college coding hubs, regional hackathon squads, and the dedicated She Builds creator circle.</p>
+            </div>
+            <button type="button" id="btn-pillar-action" class="shrink-0 px-5 py-3 bg-black hover:bg-grevix-orange text-white font-mono text-xs font-bold tracking-widest transition">
+              JOIN BUILDER DIRECTORY &rarr;
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Narrow Technical Column -->
+        <div class="hidden lg:flex lg:col-span-1 border-l border-black/15 p-4 flex-col justify-between items-end font-mono text-[10px] tracking-[0.2em] uppercase text-black/75">
+          <div class="space-y-2 text-center">
+            <div class="px-1.5 py-0.5 bg-grevix-orange text-white font-bold">01</div>
+            <div class="w-[1px] h-4 bg-black/30 mx-auto"></div>
+            <div>02</div>
+            <div class="w-[1px] h-4 bg-black/30 mx-auto"></div>
+            <div>03</div>
+            <div class="w-[1px] h-4 bg-black/30 mx-auto"></div>
+            <div>04</div>
+          </div>
+
+          <div class="space-y-0.5 text-left text-[9px] leading-snug">
+            <div>BUILD</div>
+            <div>COLLABORATE</div>
+            <div>LEARN</div>
+            <div>SHIP</div>
+            <div class="text-grevix-orange font-bold pt-2">//</div>
+            <div>A COMMUNITY</div>
+            <div>THAT TURNS</div>
+            <div>IDEAS INTO</div>
+            <div>IMPACT.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Dark Bottom Telemetry Footer Bar (Matching Mockup 3 Bottom Strip) -->
+      <div class="bg-[#070707] text-white px-5 sm:px-8 py-4 flex flex-wrap items-center justify-between gap-4 font-mono text-[11px] tracking-[0.2em]">
+        <div class="flex items-center gap-4">
+          <svg class="w-8 h-8 text-white/60" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>
+          </svg>
+          <div>
+            <div class="text-grevix-orange font-bold">// GREVIX</div>
+            <div class="text-[10px] text-white/70">A COMMUNITY THAT TURNS IDEAS INTO IMPACT.</div>
+          </div>
+        </div>
+
+        <!-- Interactive Slider Indicator [ 01 ] ---- 04 -->
+        <div class="hidden md:flex items-center gap-4">
+          <div class="w-36 h-[2px] bg-white/30 relative">
+            <span id="pillar-progress-dot" class="w-2.5 h-2.5 rounded-full bg-white absolute -top-1 left-0 transition-all duration-300"></span>
+          </div>
+          <span id="pillar-active-bracket" class="text-white font-bold">[ 01 ]</span>
+          <div class="w-28 h-[2px] bg-grevix-orange"></div>
+          <span class="text-grevix-orange font-bold">04</span>
+        </div>
+
+        <div class="flex items-center gap-4 text-[10px] text-white/75">
+          <span class="crosshair text-white/50"></span>
+          <div class="leading-tight">
+            <div>IDEAS &bull; PEOPLE</div>
+            <div>CODE &bull; IMPACT <span class="text-grevix-orange">&mdash;</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- SECTION 04: GREVIX INNOVATION LAB & BUILDER RESOURCES                 -->
+  <!-- Highlighting Month 2 Lab Mentorship, Engineers, Company Access & IP   -->
+  <!-- ===================================================================== -->
+  <section id="section-resources" class="relative bg-[#EAE9E4] text-[#111111] hud-grid-light py-12 sm:py-16 px-3 sm:px-6 lg:px-10 border-b border-black/20">
+    <div class="max-w-[1400px] mx-auto border border-black/35 bg-[#F4F3EF] p-5 sm:p-8 lg:p-12">
+
+      <div class="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-black/15 font-mono text-xs tracking-[0.2em]">
+        <div class="flex items-center gap-3">
+          <span class="text-grevix-orange font-bold">04 .</span>
+          <span>|</span>
+          <span>[ GREVIX INNOVATION LAB // BUILDER RESOURCES ]</span>
+        </div>
+        <div class="text-black/65">
+          MENTORSHIP &bull; INDUSTRY ENGINEERS &bull; COMPANY CONNECTIONS &bull; SHARED OWNERSHIP
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-8 items-start">
+        <div class="lg:col-span-5 space-y-4">
+          <div class="font-mono text-xs font-bold text-grevix-orange tracking-[0.2em]">
+            // INSIDE THE GREVIX INNOVATION LAB
+          </div>
+          <h3 class="hero-display text-3xl sm:text-5xl uppercase text-[#111111]">
+            WHERE SHORTLISTED IDEAS BECOME REAL PRODUCTS.
+          </h3>
+          <p class="text-sm text-black/75 leading-relaxed">
+            During Month 2 of <strong class="text-black">She Builds</strong> and across flagship Grevix programs, shortlisted creators unlock full access to the <strong class="text-black">Grevix Innovation Lab</strong> &mdash; bridging college innovation with seasoned industry engineering.
+          </p>
+
+          <div class="p-5 border border-black/25 bg-[#E8E7E5] space-y-2">
+            <div class="font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-between">
+              <span>SHARED OWNERSHIP CHARTER</span>
+              <span class="text-grevix-orange">VERIFIED TERMS</span>
+            </div>
+            <p class="text-xs text-black/75 leading-relaxed">
+              Project ownership is shared transparently between the creator and Grevix under clearly defined terms, with permanent credit for every team member who designs, codes, tests, and ships the project.
+            </p>
+          </div>
+        </div>
+
+        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="border border-black/25 bg-white p-6 space-y-3">
+            <div class="flex items-center justify-between font-mono text-xs text-grevix-orange font-bold">
+              <span>LAB MODULE // 01</span>
+              <span>[ MENTORSHIP ]</span>
+            </div>
+            <h4 class="font-display text-xl font-bold">1-on-1 Architecture &amp; Product Mentorship</h4>
+            <p class="text-xs text-black/70 leading-relaxed">
+              Weekly technical reviews covering system design, UI/UX polish, database modeling, and scalability so creators make confident technical decisions.
+            </p>
+          </div>
+
+          <div class="border border-black/25 bg-white p-6 space-y-3">
+            <div class="flex items-center justify-between font-mono text-xs text-grevix-orange font-bold">
+              <span>LAB MODULE // 02</span>
+              <span>[ ENGINEERS ]</span>
+            </div>
+            <h4 class="font-display text-xl font-bold">Collaboration with Industry Professionals</h4>
+            <p class="text-xs text-black/70 leading-relaxed">
+              Work side-by-side with senior engineers and practitioners who help unblock complex implementation hurdles during Month 2 &amp; Month 3.
+            </p>
+          </div>
+
+          <div class="border border-black/25 bg-white p-6 space-y-3">
+            <div class="flex items-center justify-between font-mono text-xs text-grevix-orange font-bold">
+              <span>LAB MODULE // 03</span>
+              <span>[ COMPANIES ]</span>
+            </div>
+            <h4 class="font-display text-xl font-bold">Direct Industry &amp; Company Connections</h4>
+            <p class="text-xs text-black/70 leading-relaxed">
+              Showcase tested builds directly to partner technology companies, startup founders, and hiring leaders during the Month 3 Demo Showcase.
+            </p>
+          </div>
+
+          <div class="border border-black/25 bg-white p-6 space-y-3">
+            <div class="flex items-center justify-between font-mono text-xs text-grevix-orange font-bold">
+              <span>LAB MODULE // 04</span>
+              <span>[ TEAM &amp; IP ]</span>
+            </div>
+            <h4 class="font-display text-xl font-bold">Team Recruitment &amp; Shared Ownership</h4>
+            <p class="text-xs text-black/70 leading-relaxed">
+              Shortlisted Week 1 creators recruit specialized builders in Month 2 under clear, creator-first shared ownership and attribution agreements.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- SECTION 05: ABOUT GREVIX & PARTNER FORM (Exact Match to Mockup 4)     -->
+  <!-- ===================================================================== -->
+  <section id="section-about" class="relative bg-[#F5F4F0] text-[#111111] py-12 sm:py-16 px-3 sm:px-6 lg:px-10">
+    <div class="max-w-[1400px] mx-auto border border-black/40 bg-[#F5F4F0] p-5 sm:p-8 lg:p-12 relative shadow-sm">
+
+      <!-- Top HUD Navigation Header Mirroring Mockup 4 -->
+      <div class="flex flex-wrap items-center justify-between gap-4 pb-6 mb-6 border-b border-black/20 font-mono text-xs tracking-[0.2em]">
+        <div class="flex items-center gap-3">
+          <span class="text-grevix-orange font-bold">05 .</span>
+          <span>|</span>
+          <span>ABOUT GREVIX // PARTNER &amp; CONDUCT HACKATHONS</span>
+        </div>
+        <div class="text-black/60">
+          GLOBAL BUILDER ALLIANCE
+        </div>
+      </div>
+
+      <!-- 12-Column Layout Matching Mockup 4: Left ABOUT GREVIX, Center Cyber Builder Graphic, Right Partner Form -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+
+        <!-- Left 4 Columns: ABOUT GREVIX Typography & Globe Badge -->
+        <div class="lg:col-span-4 space-y-6">
+          <div class="font-mono text-[10px] tracking-[0.22em] text-black/75 space-y-0.5 uppercase">
+            <div class="w-3 h-3 border-t border-l border-black mb-2"></div>
+            <div>IDEAS</div>
+            <div>PEOPLE</div>
+            <div>CODE</div>
+            <div>IMPACT</div>
+            <div class="w-4 h-[1.5px] bg-black mt-1.5"></div>
+          </div>
+
+          <div class="space-y-1">
+            <div class="font-mono text-xs font-bold text-black/60">01 &mdash;</div>
+            <h2 class="hero-display text-5xl sm:text-6xl uppercase tracking-tight text-[#111111]">
+              ABOUT
+            </h2>
+            <div class="font-display text-4xl sm:text-5xl font-light tracking-[0.14em] text-[#111111]">
+              GREVIX
+            </div>
+          </div>
+
+          <p class="font-mono text-xs sm:text-sm text-black/75 leading-relaxed">
+            A global community of curious builders exploring AI, open source and emerging technologies to create real-world impact.
+          </p>
+          <div class="w-6 h-[1.5px] bg-black/50"></div>
+
+          <!-- Bottom-Left Globe Icon + Caption Matching Mockup 4 -->
+          <div class="pt-6 flex items-center gap-4">
+            <div class="w-11 h-11 rounded-full border border-black/70 flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" stroke-width="1.3" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>
+              </svg>
+            </div>
+            <div class="font-mono text-[10px] tracking-[0.18em] text-black/80 uppercase leading-snug border-l border-black/25 pl-3">
+              <div>A COMMUNITY</div>
+              <div>THAT TURNS</div>
+              <div>IDEAS INTO</div>
+              <div>IMPACT.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center 4 Columns: Cybernetic Futuristic Figure Reaching Forward (From Mockup 4) -->
+        <div class="lg:col-span-4 flex items-center justify-center relative">
+          <span class="crosshair text-black/30 absolute top-4 left-4"></span>
+          <span class="crosshair text-black/30 absolute bottom-8 right-4"></span>
+          <img
+            src="./public/assets/astronauts/cyber_about.jpg"
+            alt="About Grevix Cybernetic Builder"
+            class="w-full max-w-[380px] h-auto object-contain blend-astronaut-light select-none"
+          />
+        </div>
+
+        <!-- Right 4 Columns: "Want to conduct hackathon with Grevix?" Form Card (Exact Match to Mockup 4) -->
+        <div class="lg:col-span-4">
+          <div class="border border-black/35 bg-white/90 p-6 sm:p-7 relative shadow-sm">
+            <!-- Corner Brackets -->
+            <div class="absolute top-2 left-2 w-3 h-3 border-t border-l border-black"></div>
+            <div class="absolute top-2 right-2 w-3 h-3 border-t border-r border-black"></div>
+            <div class="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-black"></div>
+            <div class="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-black"></div>
+
+            <div class="flex items-center gap-2 font-mono text-[11px] tracking-[0.2em] text-black/75 mb-3">
+              <span>// HACKATHONS</span>
+              <span class="w-2 h-2 rounded-full bg-black"></span>
+              <span class="flex-1 h-[1px] bg-black/20"></span>
+            </div>
+
+            <h3 class="font-display text-2xl font-bold text-[#111111] leading-snug">
+              Want to conduct hackathon with Grevix?
+            </h3>
+            <p class="font-mono text-xs text-black/65 mt-1.5 mb-5">
+              Fill this form and let’s build something extraordinary together.
+            </p>
+
+            <form id="form-host-hackathon" class="space-y-3.5" novalidate>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="relative">
+                  <label for="host-name" class="sr-only">Your Name</label>
+                  <input
+                    id="host-name"
+                    type="text"
+                    required
+                    placeholder="Your Name"
+                    class="w-full px-3.5 py-2.5 text-xs font-mono border border-black/25 bg-[#F9F9F7] focus:outline-none focus:border-grevix-orange"
+                  />
+                </div>
+                <div class="relative">
+                  <label for="host-org" class="sr-only">Organization / Company</label>
+                  <input
+                    id="host-org"
+                    type="text"
+                    required
+                    placeholder="Organization / Company"
+                    class="w-full px-3.5 py-2.5 text-xs font-mono border border-black/25 bg-[#F9F9F7] focus:outline-none focus:border-grevix-orange"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label for="host-email" class="sr-only">Work Email</label>
+                <input
+                  id="host-email"
+                  type="email"
+                  required
+                  placeholder="Work Email"
+                  class="w-full px-3.5 py-2.5 text-xs font-mono border border-black/25 bg-[#F9F9F7] focus:outline-none focus:border-grevix-orange"
+                />
+              </div>
+
+              <div>
+                <label for="host-type" class="sr-only">What type of hackathon?</label>
+                <select
+                  id="host-type"
+                  required
+                  class="w-full px-3.5 py-2.5 text-xs font-mono border border-black/25 bg-[#F9F9F7] text-black/80 focus:outline-none focus:border-grevix-orange"
+                >
+                  <option value="">What type of hackathon?</option>
+                  <option value="She Builds Sponsor / Lab Partner">She Builds (3-Month Girls Innovation Partner)</option>
+                  <option value="College / University Flagship Hackathon">College / University Flagship Hackathon</option>
+                  <option value="Global AI & Open Source Sprint">Global AI &amp; Open Source Sprint</option>
+                  <option value="Corporate Open Innovation Challenge">Corporate Open Innovation Challenge</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="host-message" class="sr-only">Tell us about your idea or requirements</label>
+                <textarea
+                  id="host-message"
+                  rows="3"
+                  required
+                  placeholder="Tell us about your idea or requirements"
+                  class="w-full px-3.5 py-2.5 text-xs font-mono border border-black/25 bg-[#F9F9F7] focus:outline-none focus:border-grevix-orange"
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full bg-[#111111] hover:bg-grevix-orange text-white font-mono text-xs font-bold tracking-[0.2em] py-3.5 transition flex items-center justify-center gap-3"
+              >
+                <span>SUBMIT REQUEST</span>
+                <span>&rarr;</span>
+              </button>
+
+              <div id="host-form-feedback" class="hidden p-3 bg-emerald-950 text-emerald-200 font-mono text-[11px] border border-emerald-500/40"></div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#050505] text-white/70 border-t border-white/15 py-8 px-4 sm:px-8 font-mono text-xs">
+    <div class="max-w-[1400px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="w-2.5 h-2.5 rounded-full bg-grevix-orange"></span>
+        <span class="text-white font-bold tracking-[0.22em]">GREVIX</span>
+        <span class="text-white/40">|</span>
+        <span>A FEW WHO BUILDS WHAT'S NEXT</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-4 text-[11px]">
+        <button type="button" id="btn-footer-ui-refs" class="hover:text-grevix-orange underline underline-offset-4">VIEW ORIGINAL UI MOCKUPS (4)</button>
+        <span>&bull;</span>
+        <button type="button" id="btn-footer-posters" class="hover:text-grevix-pink underline underline-offset-4">SHE BUILDS POSTERS (5)</button>
+        <span>&bull;</span>
+        <button type="button" id="btn-footer-submit" class="text-grevix-orange font-bold hover:underline">SUBMIT IDEA &rarr;</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 1: "SHE BUILDS" & HACKATHON IDEA SUBMISSION / APPLICATION PORTAL -->
+  <!-- ===================================================================== -->
+  <div id="modal-pitch" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-[#111115] text-white border-2 border-grevix-orange max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl my-8">
+      <div class="flex items-center justify-between pb-4 border-b border-white/15 font-mono text-xs">
+        <div class="flex items-center gap-2 text-grevix-orange font-bold tracking-widest">
+          <span>// GREVIX APPLICATION &amp; IDEA SUBMISSION PORTAL</span>
+        </div>
+        <button type="button" id="btn-close-pitch-modal" class="px-2.5 py-1 border border-white/25 hover:border-grevix-orange text-white/80 font-mono text-xs">
+          ESC [X]
+        </button>
+      </div>
+
+      <!-- Track Switcher Inside Modal -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 my-5 font-mono text-xs">
+        <button type="button" data-role="Week 1 Idea Creator (She Builds)" class="modal-role-tab py-2.5 px-3 border border-grevix-orange bg-grevix-orange text-white font-bold text-left">
+          01. SHE BUILDS IDEA<br><span class="text-[10px] opacity-90 font-normal">Week 1 Open Pitch (Girls)</span>
+        </button>
+        <button type="button" data-role="Month 2 Builder Team (She Builds)" class="modal-role-tab py-2.5 px-3 border border-white/20 bg-white/5 text-white/75 hover:border-white/50 text-left">
+          02. JOIN BUILD TEAM<br><span class="text-[10px] opacity-80 font-normal">Month 2 Dev &amp; Design</span>
+        </button>
+        <button type="button" data-role="Global Hackathon Squad" class="modal-role-tab py-2.5 px-3 border border-white/20 bg-white/5 text-white/75 hover:border-white/50 text-left">
+          03. GLOBAL HACKATHON<br><span class="text-[10px] opacity-80 font-normal">48h/72h Sprint Registration</span>
+        </button>
+      </div>
+
+      <form id="form-pitch-submission" class="space-y-4" novalidate>
+        <input type="hidden" id="pitch-role-input" value="Week 1 Idea Creator (She Builds)" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="pitch-creator-name" class="block font-mono text-[11px] text-white/70 mb-1">CREATOR / BUILDER NAME *</label>
+            <input id="pitch-creator-name" type="text" required placeholder="e.g., Ananya Sharma" class="w-full px-3.5 py-2.5 bg-black border border-white/25 text-white text-xs font-mono focus:outline-none focus:border-grevix-orange" />
+          </div>
+          <div>
+            <label for="pitch-creator-email" class="block font-mono text-[11px] text-white/70 mb-1">COLLEGE / WORK EMAIL *</label>
+            <input id="pitch-creator-email" type="email" required placeholder="name@college.edu" class="w-full px-3.5 py-2.5 bg-black border border-white/25 text-white text-xs font-mono focus:outline-none focus:border-grevix-orange" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="pitch-title" class="block font-mono text-[11px] text-white/70 mb-1">PROJECT / IDEA TITLE *</label>
+            <input id="pitch-title" type="text" required placeholder="e.g., SpectraMesh — Offline Emergency AI" class="w-full px-3.5 py-2.5 bg-black border border-white/25 text-white text-xs font-mono focus:outline-none focus:border-grevix-orange" />
+          </div>
+          <div>
+            <label for="pitch-domain" class="block font-mono text-[11px] text-white/70 mb-1">PRIMARY TECH DOMAIN *</label>
+            <select id="pitch-domain" required class="w-full px-3.5 py-2.5 bg-black border border-white/25 text-white text-xs font-mono focus:outline-none focus:border-grevix-orange">
+              <option value="AI & Autonomous Systems">AI &amp; Autonomous Systems</option>
+              <option value="Developer Tools & Open Source">Developer Tools &amp; Open Source</option>
+              <option value="HealthTech & Bio-Innovation">HealthTech &amp; Bio-Innovation</option>
+              <option value="Climate, Hardware & IoT">Climate, Hardware &amp; IoT</option>
+              <option value="Consumer & Social Impact">Consumer &amp; Social Impact</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="pitch-approach" class="block font-mono text-[11px] text-white/70 mb-1">WEEK 1 EXPLORATION &amp; TECHNICAL APPROACH *</label>
+          <textarea id="pitch-approach" rows="3" required placeholder="Describe what you want to build, how you want to approach it in Month 1, and what Grevix Innovation Lab mentorship you need in Month 2..." class="w-full px-3.5 py-2.5 bg-black border border-white/25 text-white text-xs font-mono focus:outline-none focus:border-grevix-orange"></textarea>
+        </div>
+
+        <label class="flex items-start gap-2.5 text-xs text-white/75 cursor-pointer pt-1">
+          <input id="pitch-ip-agree" type="checkbox" checked class="mt-0.5 accent-grevix-orange" />
+          <span>I understand that for <strong>She Builds</strong>, the top 2 ideas are shortlisted at the end of Week 1, and project ownership is shared between the creator and Grevix under clearly defined terms with full credit for everyone involved.</span>
+        </label>
+
+        <div class="pt-3 flex items-center justify-end gap-3">
+          <button type="button" id="btn-cancel-pitch" class="px-4 py-3 border border-white/25 font-mono text-xs text-white/75 hover:text-white">
+            CANCEL
+          </button>
+          <button type="submit" class="px-6 py-3 bg-grevix-orange hover:bg-grevix-orangeHover text-white font-mono text-xs font-bold tracking-[0.18em]">
+            TRANSMIT SUBMISSION &rarr;
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 2: "MY ORBIT" — LIVE SUBMISSIONS, SHORTLIST & PARTNER REQUESTS  -->
+  <!-- ===================================================================== -->
+  <div id="modal-dashboard" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-[#0F0F13] text-white border border-white/30 max-w-3xl w-full p-6 sm:p-8 relative shadow-2xl my-8">
+      <div class="flex items-center justify-between pb-4 border-b border-white/15 font-mono text-xs">
+        <span class="text-grevix-orange font-bold tracking-widest">// MY ORBIT &mdash; LIVE SUBMISSIONS &amp; SHORTLIST TRACKER</span>
+        <button type="button" id="btn-close-dashboard" class="px-2.5 py-1 border border-white/25 hover:border-grevix-orange text-white/80">
+          CLOSE [X]
+        </button>
+      </div>
+
+      <div class="mt-5 space-y-6">
+        <div>
+          <div class="flex items-center justify-between font-mono text-xs text-white/70 mb-3">
+            <span>SUBMITTED IDEAS &amp; APPLICATIONS</span>
+            <button type="button" id="btn-new-from-dashboard" class="text-grevix-orange font-bold hover:underline">+ NEW IDEA SUBMISSION</button>
+          </div>
+          <div id="dashboard-submissions-list" class="space-y-3"></div>
+        </div>
+
+        <div class="pt-4 border-t border-white/15">
+          <div class="font-mono text-xs text-white/70 mb-3">PARTNER HACKATHON REQUESTS</div>
+          <div id="dashboard-partner-list" class="space-y-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 3: POSTER & UI REFERENCE LIGHTBOX GALLERY                       -->
+  <!-- ===================================================================== -->
+  <div id="modal-gallery" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-[#111115] text-white border border-white/25 max-w-4xl w-full p-5 sm:p-7 relative my-8">
+      <div class="flex items-center justify-between pb-4 border-b border-white/15 font-mono text-xs">
+        <span id="gallery-modal-title" class="text-grevix-orange font-bold tracking-widest">// GREVIX VISUAL ARCHIVE</span>
+        <button type="button" id="btn-close-gallery" class="px-2.5 py-1 border border-white/25 hover:border-grevix-orange">
+          CLOSE [X]
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center pt-5">
+        <div class="md:col-span-7 bg-black border border-white/15 flex items-center justify-center p-2 max-h-[70vh] overflow-hidden">
+          <img id="gallery-active-img" src="./public/assets/posters/she_builds_poster_1.jpg" alt="Gallery Preview" class="max-h-[65vh] w-auto object-contain mx-auto" />
+        </div>
+        <div class="md:col-span-5 space-y-4">
+          <div id="gallery-active-tag" class="font-mono text-xs text-grevix-pink tracking-widest">POSTER 01 // 05</div>
+          <h4 id="gallery-active-heading" class="font-display text-2xl font-bold">She Builds — Rooftop Horizon</h4>
+          <p id="gallery-active-caption" class="text-xs text-white/75 leading-relaxed">
+            Official poster artwork for "She Builds by Grevix" — A 3-month open innovation program exclusively for girls. Explore (Month 1), Build (Month 2), Improve &amp; Showcase (Month 3).
+          </p>
+          <div class="flex items-center gap-3 pt-2">
+            <button type="button" id="btn-gallery-prev" class="px-4 py-2.5 border border-white/25 hover:border-grevix-orange font-mono text-xs">&larr; PREV</button>
+            <button type="button" id="btn-gallery-next" class="px-4 py-2.5 border border-white/25 hover:border-grevix-orange font-mono text-xs">NEXT &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 4: INTERACTIVE MISSION REEL & HOW IT WORKS WALKTHROUGH          -->
+  <!-- ===================================================================== -->
+  <div id="modal-reel" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-[#0B0B0E] text-white border-2 border-grevix-orange max-w-3xl w-full p-6 sm:p-8 relative">
+      <div class="flex items-center justify-between pb-4 border-b border-white/15 font-mono text-xs">
+        <span class="text-grevix-orange font-bold tracking-widest">// GREVIX INTERACTIVE MISSION BRIEFING</span>
+        <button type="button" id="btn-close-reel" class="px-2.5 py-1 border border-white/25 hover:border-grevix-orange">
+          CLOSE [X]
+        </button>
+      </div>
+
+      <div class="py-6 space-y-5">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+          <div class="p-4 border border-grevix-orange bg-grevix-orange/10">
+            <div class="text-grevix-orange font-bold">01 // EXPLORE (MONTH 1)</div>
+            <p class="mt-2 text-white/80 text-[11px] leading-relaxed">
+              Week 1 open submission with complete creative freedom. Top 2 ideas shortlisted at the end of Week 1, followed by 3 weeks of concept refinement.
+            </p>
+          </div>
+          <div class="p-4 border border-white/20 bg-white/5">
+            <div class="text-grevix-pink font-bold">02 // BUILD &amp; LAB (MONTH 2)</div>
+            <p class="mt-2 text-white/80 text-[11px] leading-relaxed">
+              Build full teams and start development inside the Grevix Innovation Lab with engineer collaboration, mentorship, and company networking.
+            </p>
+          </div>
+          <div class="p-4 border border-white/20 bg-white/5">
+            <div class="text-white font-bold">03 // SHOWCASE (MONTH 3)</div>
+            <p class="mt-2 text-white/80 text-[11px] leading-relaxed">
+              Improve, test, and showcase real-world projects. Shared project ownership between creator and Grevix under clear terms with full credit.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/15">
+          <div class="font-mono text-xs text-white/70">
+            READY TO PITCH YOUR WEEK 1 CONCEPT OR HOST AN EVENT?
+          </div>
+          <button type="button" id="btn-reel-to-pitch" class="px-5 py-3 bg-grevix-orange hover:bg-grevix-orangeHover text-white font-mono text-xs font-bold tracking-widest">
+            LAUNCH APPLICATION PORTAL &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION BANNER -->
+  <div id="hud-toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-[#111111] text-white border-l-4 border-grevix-orange px-5 py-3.5 shadow-xl font-mono text-xs tracking-wider flex items-center gap-3">
+    <span class="w-2 h-2 rounded-full bg-grevix-orange"></span>
+    <span id="hud-toast-text">TELEMETRY UPDATED</span>
+  </div>
+
+  <script>
+    (function () {
+      // 1. State Management with Safe LocalStorage Persistence
+      const defaultSubmissions = [
+        {
+          id: 'SB-101',
+          role: 'Week 1 Idea Creator (She Builds)',
+          name: 'Riya Verma',
+          email: 'riya.v@campus.edu',
+          title: 'AetherGrid — Decentralized Campus Micro-Compute',
+          domain: 'AI & Autonomous Systems',
+          approach: 'Pooling idle college lab GPUs for student researchers during Month 2 Grevix Innovation Lab sprint.',
+          status: 'WEEK 1 CANDIDATE // UNDER REVIEW'
+        },
+        {
+          id: 'SB-102',
+          role: 'Week 1 Idea Creator (She Builds)',
+          name: 'Meera Nair',
+          email: 'meera.nair@campus.edu',
+          title: 'PulseGuard — Edge Wearable Biosensor Firmware',
+          domain: 'HealthTech & Bio-Innovation',
+          approach: 'Low-power acoustic & PPG anomaly detection with Month 3 clinical simulation showcase.',
+          status: 'SHORTLISTED SLOT #1 PREVIEW'
+        }
+      ];
+
+      const defaultPartners = [
+        {
+          id: 'PR-01',
+          name: 'Arjun Mehta',
+          org: 'College Coding Community Lead',
+          email: 'lead@grevix.org',
+          type: 'She Builds Sponsor / Lab Partner',
+          message: 'Launching the 3-month She Builds open innovation program exclusively for girls.'
+        }
+      ];
+
+      let submissions = defaultSubmissions.slice();
+      let partnerRequests = defaultPartners.slice();
+
+      try {
+        const savedSub = localStorage.getItem('grevix_submissions_v1');
+        if (savedSub) submissions = JSON.parse(savedSub);
+        const savedPart = localStorage.getItem('grevix_partners_v1');
+        if (savedPart) partnerRequests = JSON.parse(savedPart);
+      } catch (e) {
+        // Fallback to in-memory inside sandboxed iframe
+      }
+
+      function saveState() {
+        try {
+          localStorage.setItem('grevix_submissions_v1', JSON.stringify(submissions));
+          localStorage.setItem('grevix_partners_v1', JSON.stringify(partnerRequests));
+        } catch (e) {}
+        updateBadgeCount();
+      }
+
+      function updateBadgeCount() {
+        const badge = document.getElementById('badge-submission-count');
+        if (badge) badge.textContent = String(submissions.length);
+      }
+
+      function showToast(msg) {
+        const toast = document.getElementById('hud-toast');
+        const text = document.getElementById('hud-toast-text');
+        if (!toast || !text) return;
+        text.textContent = msg;
+        toast.classList.remove('hidden');
+        clearTimeout(window.__grevixToastTimer);
+        window.__grevixToastTimer = setTimeout(function () {
+          toast.classList.add('hidden');
+        }, 3600);
+      }
+
+      // 2. Smooth Navigation & Active HUD Telemetry Bar
+      function navigateToSection(sectionId, indexStr, labelStr) {
+        const target = document.getElementById(sectionId);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        if (indexStr) {
+          const idxEl = document.getElementById('hud-active-index');
+          if (idxEl) idxEl.textContent = indexSt<script src="./src/scripts/app.js" defer></script>
