@@ -4,8 +4,8 @@ node_modules/
 .pnp.js
 
 # Build outputs
-dist/
-build/
+/dist/
+/build/
 .vercel/
 .netlify/
 
@@ -21,3 +21,9 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# Large raw 3D source archives & Blender files
+*.zip
+*.blend
+*.blend1
+

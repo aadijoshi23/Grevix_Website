@@ -1,3 +1,9 @@
+import { webGLManager } from './webgl-manager.js';
+import { HeroBlackHoleController, InteractiveBlackholeWidget } from './hero-blackhole.js';
+import { AboutPlanetsController } from './about-planets.js';
+import { GalaxyBackgroundController, TheiaPrimeCelestialAccent } from './galaxy-theia.js';
+import { PortalBackdropController, TitanShowcaseController } from './showcase-titan.js';
+
 (function () {
   'use strict';
 
@@ -878,6 +884,104 @@
         }
       }
     });
+
+
+    // 15. Scoped 3D & WebGL Assets Integration (Managed by WebGLManager)
+    function init3DAssets() {
+      try {
+        // 1. Hero Section: Full-bleed Three.js Black Hole + Interactive Blackhole Widget
+        const heroWrap = document.getElementById('hero-blackhole-canvas-wrap');
+        if (heroWrap) {
+          const heroBlackHole = new HeroBlackHoleController('hero-blackhole-canvas-wrap');
+          webGLManager.register('section-home', heroBlackHole);
+        }
+
+        const interactiveBHEl = document.getElementById('interactive-blackhole-canvas');
+        if (interactiveBHEl) {
+          const interactiveBH = new InteractiveBlackholeWidget('interactive-blackhole-canvas');
+          webGLManager.register('widget-interactive-blackhole', interactiveBH);
+        }
+
+        // 2. Programs / Features: Spiral Galaxy Canvas + Theia Prime Celestial Accent
+        const galaxyContainer = document.getElementById('galaxy-bg-container');
+        if (galaxyContainer) {
+          const galaxyCtrl = new GalaxyBackgroundController('galaxy-bg-container');
+          webGLManager.register('section-hackathons', galaxyCtrl);
+        }
+
+        const theiaContainer = document.getElementById('theia-prime-canvas-container');
+        if (theiaContainer) {
+          const theiaCtrl = new TheiaPrimeCelestialAccent('theia-prime-canvas-container');
+          webGLManager.register(theiaContainer, theiaCtrl);
+        }
+
+        // 3. Showcase Section: Black Hole Portal Backdrop + Brute Titan HUD Showcase
+        const portalCanvas = document.getElementById('portal-backdrop-canvas');
+        if (portalCanvas) {
+          const portalCtrl = new PortalBackdropController('portal-backdrop-canvas');
+          webGLManager.register('portal-showcase-wrapper', portalCtrl);
+        }
+
+        const titanContainer = document.getElementById('titan-showcase-container');
+        if (titanContainer) {
+          const titanCtrl = new TitanShowcaseController('titan-showcase-container');
+          webGLManager.register('portal-showcase-wrapper', titanCtrl);
+        }
+
+        const btnShowcasePitch = document.getElementById('btn-showcase-pitch');
+        if (btnShowcasePitch) {
+          btnShowcasePitch.addEventListener('click', function () {
+            openPitchModal('Week 1 Idea Creator (She Builds)');
+          });
+        }
+
+        // 4. About Section: Miller's Planet & Kepler-36b Celestial Engine
+        const aboutPlanetsContainer = document.getElementById('about-planets-container');
+        if (aboutPlanetsContainer) {
+          const aboutPlanetsCtrl = new AboutPlanetsController('about-planets-container');
+          webGLManager.register(aboutPlanetsContainer, aboutPlanetsCtrl);
+
+          const btnDual = document.getElementById('btn-focus-dual');
+          const btnMillers = document.getElementById('btn-focus-millers');
+          const btnKepler = document.getElementById('btn-focus-kepler');
+          const focusButtons = [btnDual, btnMillers, btnKepler];
+
+          function setFocusBtn(activeBtn) {
+            focusButtons.forEach(function (b) {
+              if (!b) return;
+              if (b === activeBtn) {
+                b.classList.add('active');
+              } else {
+                b.classList.remove('active');
+              }
+            });
+          }
+
+          if (btnDual) {
+            btnDual.addEventListener('click', function () {
+              aboutPlanetsCtrl.setFocus('dual');
+              setFocusBtn(btnDual);
+            });
+          }
+          if (btnMillers) {
+            btnMillers.addEventListener('click', function () {
+              aboutPlanetsCtrl.setFocus('millers');
+              setFocusBtn(btnMillers);
+            });
+          }
+          if (btnKepler) {
+            btnKepler.addEventListener('click', function () {
+              aboutPlanetsCtrl.setFocus('kepler');
+              setFocusBtn(btnKepler);
+            });
+          }
+        }
+      } catch (err) {
+        console.error('[Grevix 3D Engine] Initialization notice:', err);
+      }
+    }
+
+    init3DAssets();
 
     // Initialize counts and initial nav state
     updateBadgeCount();
