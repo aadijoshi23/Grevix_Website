@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { cursorState } from './cursor-system.js';
 
 function resolveAssetUrl(relPath) {
   return relPath.replace(/^\.\/public\//, './');
@@ -8,7 +9,8 @@ function resolveAssetUrl(relPath) {
 
 /**
  * Portal Backdrop Engine (black-hole-animation-canvas integration)
- * Renders a high-density 2,800 particle accretion vortex with a dark singularity event horizon.
+ * Renders a high-density 3,000 particle accretion vortex with a dark singularity event horizon.
+ * Integrates cursor repulsion: nearby particles are deflected within a 130px radius.
  */
 export class PortalBackdropController {
   constructor(canvasOrId) {
@@ -25,9 +27,9 @@ export class PortalBackdropController {
   }
 
   initCanvas() {
-    const parent = this.canvas.parentElement || { clientWidth: window.innerWidth, clientHeight: 500 };
+    const parent = this.canvas.parentElement || { clientWidth: window.innerWidth, clientHeight: 520 };
     this.width = parent.clientWidth || window.innerWidth;
-    this.height = parent.clientHeight || 500;
+    this.height = parent.clientHeight || 520;
     this.canvas.width = this.width;
     this.canvas.height = this.height;
     this.canvas.style.position = 'absolute';
@@ -39,15 +41,15 @@ export class PortalBackdropController {
 
   initParticles() {
     this.particles = [];
-    this.count = 2800;
+    this.count = 3000; // Exactly 3000 particles as per black-hole-animation-canvas
     this.centerX = this.width / 2;
     this.centerY = this.height / 2;
-    this.radius = 65; // Black hole core radius
+    this.radius = 65; // Black hole event horizon core radius
 
     for (let i = 0; i < this.count; i++) {
       const angle = Math.random() * Math.PI * 2;
       const opacity = (Math.random() * 5 + 2) / 10;
-      const distance = (1 / opacity) * (this.radius + Math.random() * 320);
+      const distance = (1 / opacity) * (this.radius + Math.random() * 340);
       const speed = distance * 0.000038;
 
       this.particles.push({
@@ -84,36 +86,50 @@ export class PortalBackdropController {
   }
 
   render() {
-    this.ctx.fillStyle = 'rgba(5, 5, 7, 0.28)';
+    this.ctx.fillStyle = 'rgba(5, 5, 8, 0.28)';
     this.ctx.fillRect(0, 0, this.width, this.height);
 
-    // Dark Gravitational Singularity Core
+    // Singularity Core Glow
     const grad = this.ctx.createRadialGradient(this.centerX, this.centerY, 10, this.centerX, this.centerY, this.radius * 1.6);
     grad.addColorStop(0, '#000000');
     grad.addColorStop(0.5, '#120500');
-    grad.addColorStop(0.85, 'rgba(255, 68, 0, 0.4)');
+    grad.addColorStop(0.85, 'rgba(255, 68, 0, 0.45)');
     grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
     this.ctx.fillStyle = grad;
     this.ctx.beginPath();
     this.ctx.arc(this.centerX, this.centerY, this.radius * 1.6, 0, Math.PI * 2);
     this.ctx.fill();
 
-    // Central Event Horizon
-    this.ctx.fillStyle = '#050505';
+    // Singularity Pure Black Event Horizon
+    this.ctx.fillStyle = '#050508';
     this.ctx.beginPath();
     this.ctx.arc(this.centerX, this.centerY, this.radius * 0.65, 0, Math.PI * 2);
     this.ctx.fill();
 
-    // Orbiting Accretion Particles
+    // Orbiting Accretion Particles with cursor repulsion
+    const rect = this.canvas.getBoundingClientRect();
+    const cursorLocalX = cursorState.screenX - rect.left;
+    const cursorLocalY = cursorState.screenY - rect.top;
+
     for (let i = 0; i < this.particles.length; i++) {
       const p = this.particles[i];
       p.angle += p.speed;
-      p.x = this.centerX + p.distance * Math.cos(p.angle);
-      p.y = this.centerY + p.distance * Math.sin(p.angle) * 0.72; // Elliptical inclination
+      let px = this.centerX + p.distance * Math.cos(p.angle);
+      let py = this.centerY + p.distance * Math.sin(p.angle) * 0.72; // Elliptical inclination
+
+      // Repel from cursor if within 130px
+      const dx = px - cursorLocalX;
+      const dy = py - cursorLocalY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 130 && dist > 1) {
+        const force = (1 - dist / 130) * 26;
+        px += (dx / dist) * force;
+        py += (dy / dist) * force;
+      }
 
       this.ctx.fillStyle = `rgba(${p.color}, ${p.opacity})`;
       this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      this.ctx.arc(px, py, p.radius, 0, Math.PI * 2);
       this.ctx.fill();
     }
   }
@@ -128,12 +144,11 @@ export class PortalBackdropController {
 /**
  * Three.js Cyberpunk HUD Showcase Frame for Brute Prototype Titan
  * Features:
- * - GLTFLoader with progressive loading bar and telemetry status
+ * - GLTFLoader loading source/Untitled.glb with progressive telemetry progress
  * - OrbitControls for 360-degree interactive rotation, panning, and zooming
+ * - Slow continuous idle rotation
  * - Wireframe mode toggle (Cyberpunk Manga CAD look vs Full PBR)
- * - Auto-rotation toggle
- * - Lighting presets (Neon Orange/Cyan vs Studio Keylight)
- * - Component texture inspection tabs
+ * - Auto-rotation toggle & reset
  */
 export class TitanShowcaseController {
   constructor(containerId) {
@@ -180,7 +195,7 @@ export class TitanShowcaseController {
     this.container.appendChild(canvas);
 
     // Cyberpunk Manga HUD Ground Grid
-    const gridHelper = new THREE.GridHelper(10, 20, 0xff4400, 0x333340);
+    const gridHelper = new THREE.GridHelper(10, 20, 0xff4400, 0x222230);
     gridHelper.position.y = -1.6;
     this.scene.add(gridHelper);
   }
@@ -286,7 +301,7 @@ export class TitanShowcaseController {
 
       const statusEl = document.getElementById('titan-telemetry-status');
       if (statusEl) {
-        statusEl.textContent = 'PROTOTYPE MESH ACTIVE // 360° ORBIT SYNC';
+        statusEl.textContent = 'TITAN CAMERAMAN MECHA ACTIVE // 360° ORBIT SYNC';
         statusEl.classList.remove('text-yellow-400');
         statusEl.classList.add('text-emerald-400');
       }
@@ -299,12 +314,12 @@ export class TitanShowcaseController {
         const totalMB = (xhr.total / (1024 * 1024)).toFixed(1);
         if (progressBar) progressBar.style.width = `${percent}%`;
         if (progressText) {
-          progressText.textContent = `LOADING TITAN PROTOTYPE MESH [ ${percent}% ] (${loadedMB}MB / ${totalMB}MB)`;
+          progressText.textContent = `LOADING TITAN MECHA MESH [ ${percent}% ] (${loadedMB}MB / ${totalMB}MB)`;
         }
       } else {
         const loadedMB = (xhr.loaded / (1024 * 1024)).toFixed(1);
         if (progressText) {
-          progressText.textContent = `STREAMING TITAN PROTOTYPE MESH [ ${loadedMB}MB ]...`;
+          progressText.textContent = `STREAMING TITAN MECHA MESH [ ${loadedMB}MB ]...`;
         }
       }
     };
@@ -314,12 +329,11 @@ export class TitanShowcaseController {
       handleSuccess,
       handleProgress,
       () => {
-        // Fallback to ./public/ prefix
         const fallbackUrl = './public/' + primaryUrl.replace(/^\.\//, '');
         loader.load(fallbackUrl, handleSuccess, handleProgress, (err) => {
           console.warn('[TitanShowcase] GLB Load warning:', err);
           if (progressText) {
-            progressText.textContent = 'TITAN MESH CACHED // PBR TEXTURE HUD ACTIVE';
+            progressText.textContent = 'TITAN MECHA CACHED // PBR TEXTURE HUD ACTIVE';
           }
         });
       }

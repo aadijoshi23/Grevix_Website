@@ -1,13 +1,16 @@
 import * as THREE from 'three';
+import { cursorState } from './cursor-system.js';
 
-function resolveAssetUrl(relPath) {
-  return relPath.replace(/^\.\/public\//, './');
+function resolveAsset(path) {
+  return path.replace(/^\.\/public\//, './');
 }
 
 /**
- * Galaxy Background Controller (galaxythree-js integration)
- * Renders a massive 75,000-particle spiral galaxy behind the Hackathons section.
- * Uses Grevix Orange (#FF4400), Pink (#E285A9), and Cosmic Cyan/Blue (#00E5FF).
+ * Programs & Tracks Section: 100,000 Particle 3D Spiral Galaxy (galaxythree-js)
+ * Features:
+ * - 100,000 stars with 3 spiral branches, logarithmic curl, Grevix 3-way color gradient
+ * - Continuous 60fps rotational spin behind dark-glass cards
+ * - Real-time camera & universe mouse-follow rig (0.06 damping)
  */
 export class GalaxyBackgroundController {
   constructor(containerId) {
@@ -17,18 +20,17 @@ export class GalaxyBackgroundController {
     this.isRunning = false;
     this.rafId = null;
     this.clock = new THREE.Clock();
-    this.mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
 
     this.parameters = {
-      count: 75000,
-      size: 0.016,
-      radius: 6.5,
+      count: 100000, // Exactly 100k particles as specified in Step 2.2
+      size: 0.015,
+      radius: 7.2,
       branches: 3,
-      spin: 1.1,
-      randomness: 0.22,
-      randomnessPower: 3.2,
-      insideColor: '#ff4400',  // Grevix Orange
-      midColor: '#e285a9',     // Grevix Pink
+      spin: 1.15,
+      randomness: 0.24,
+      randomnessPower: 3.3,
+      insideColor: '#ff4400',  // Grevix Flame Orange
+      midColor: '#e285a9',     // Grevix Neon Pink
       outsideColor: '#00a6ff'  // Cosmic Cyan/Blue
     };
 
@@ -43,8 +45,9 @@ export class GalaxyBackgroundController {
     const height = this.container.clientHeight || window.innerHeight;
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 100);
-    this.camera.position.set(-4.5, 3.2, 3.8);
+    this.camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 100);
+    this.baseCamPos = new THREE.Vector3(-4.8, 3.4, 4.2);
+    this.camera.position.copy(this.baseCamPos);
     this.camera.lookAt(0, 0, 0);
 
     this.renderer = new THREE.WebGLRenderer({
@@ -99,13 +102,13 @@ export class GalaxyBackgroundController {
       positions[i3 + 1] = randomY;
       positions[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ;
 
-      // 3-way color gradient along spiral radius
+      // 3-way color gradient
       const normalizedR = radius / this.parameters.radius;
       const mixedColor = colorInside.clone();
-      if (normalizedR < 0.45) {
-        mixedColor.lerp(colorMid, normalizedR / 0.45);
+      if (normalizedR < 0.42) {
+        mixedColor.lerp(colorMid, normalizedR / 0.42);
       } else {
-        mixedColor.copy(colorMid).lerp(colorOutside, (normalizedR - 0.45) / 0.55);
+        mixedColor.copy(colorMid).lerp(colorOutside, (normalizedR - 0.42) / 0.58);
       }
 
       colors[i3] = mixedColor.r;
@@ -139,15 +142,6 @@ export class GalaxyBackgroundController {
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
     };
     window.addEventListener('resize', this.handleResize);
-
-    const hackathonSection = document.getElementById('section-hackathons');
-    if (hackathonSection) {
-      hackathonSection.addEventListener('mousemove', (e) => {
-        const rect = hackathonSection.getBoundingClientRect();
-        this.mouse.targetX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-        this.mouse.targetY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-      }, { passive: true });
-    }
   }
 
   pause() {
@@ -173,19 +167,20 @@ export class GalaxyBackgroundController {
 
   render() {
     const elapsed = this.clock.getElapsedTime();
+    const mx = cursorState.lerpedX;
+    const my = cursorState.lerpedY;
 
-    this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.04;
-    this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.04;
-
+    // Continuous 60fps spin of all 100k stars
     if (this.galaxyPoints) {
-      this.galaxyPoints.rotation.y = elapsed * 0.04;
-      this.galaxyPoints.rotation.x = this.mouse.y * 0.12;
-      this.galaxyPoints.rotation.z = this.mouse.x * 0.08;
+      this.galaxyPoints.rotation.y = elapsed * 0.045;
+      this.galaxyPoints.rotation.x = my * 0.14;
+      this.galaxyPoints.rotation.z = mx * 0.1;
     }
 
-    this.camera.position.x = -4.5 + this.mouse.x * 0.5;
-    this.camera.position.y = 3.2 - this.mouse.y * 0.4;
-    this.camera.lookAt(0, 0, 0);
+    // Camera mouse follow
+    this.camera.position.x = this.baseCamPos.x + mx * 0.8;
+    this.camera.position.y = this.baseCamPos.y - my * 0.6;
+    this.camera.lookAt(mx * 0.2, -my * 0.15, 0);
 
     this.renderer.render(this.scene, this.camera);
   }
@@ -201,14 +196,11 @@ export class GalaxyBackgroundController {
 }
 
 /**
- * Floating 3D Celestial Accent: Theia Prime (Frozen Ice Giant) & 3 Orbiting Moons
- * Features:
- * - High-res ice planet texture map
- * - 3 Distinct Orbiting Moons (Eris, Moon 2, Moon 3)
- * - Atmospheric ice rim lighting
- * - Interactive mouse tilt & orbital trajectory rings
+ * Pixel Planet Kepler-36b 3D Viewport (pixel-planet-kepler-36-b)
+ * Rendered beside the Programs & Tracks section header.
+ * Uses THREE.NearestFilter for authentic pixel-art exoplanet texture + celestial ring.
  */
-export class TheiaPrimeCelestialAccent {
+export class KeplerPlanetController {
   constructor(containerId) {
     this.container = document.getElementById(containerId);
     if (!this.container) return;
@@ -216,26 +208,24 @@ export class TheiaPrimeCelestialAccent {
     this.isRunning = false;
     this.rafId = null;
     this.clock = new THREE.Clock();
-    this.mouse = { x: 0, y: 0, targetX: 0, targetY: 0 };
 
     this.initScene();
-    this.initLighting();
-    this.loadBodies();
+    this.loadKepler();
     this.initEvents();
     this.resume();
   }
 
   initScene() {
-    const width = this.container.clientWidth || 300;
-    const height = this.container.clientHeight || 260;
+    const width = this.container.clientWidth || 280;
+    const height = this.container.clientHeight || 240;
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-    this.camera.position.set(0, 1.2, 5.8);
+    this.camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+    this.camera.position.set(0, 0.8, 4.6);
     this.camera.lookAt(0, 0, 0);
 
     this.renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: false, // Keep pixel edges crisp
       alpha: true,
       powerPreference: 'high-performance'
     });
@@ -248,154 +238,69 @@ export class TheiaPrimeCelestialAccent {
     canvas.style.display = 'block';
     this.container.appendChild(canvas);
 
-    this.systemGroup = new THREE.Group();
-    this.scene.add(this.systemGroup);
+    // Lights
+    const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+    this.scene.add(ambient);
+
+    const sun = new THREE.DirectionalLight(0xfff5e6, 2.5);
+    sun.position.set(5, 4, 4);
+    this.scene.add(sun);
+
+    const rim = new THREE.DirectionalLight(0x00e5ff, 1.4);
+    rim.position.set(-5, -2, -3);
+    this.scene.add(rim);
+
+    this.keplerGroup = new THREE.Group();
+    this.scene.add(this.keplerGroup);
   }
 
-  initLighting() {
-    const ambientLight = new THREE.AmbientLight(0xddeeff, 0.55);
-    this.scene.add(ambientLight);
-
-    const keyLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    keyLight.position.set(6, 4, 5);
-    this.scene.add(keyLight);
-
-    const rimLight = new THREE.DirectionalLight(0x00f0ff, 1.5);
-    rimLight.position.set(-6, -2, -4);
-    this.scene.add(rimLight);
-  }
-
-  loadBodies() {
+  loadKepler() {
     const loader = new THREE.TextureLoader();
-
-    const loadWithFallback = (path) => {
-      const primaryUrl = resolveAssetUrl(path);
-      return loader.load(
-        primaryUrl,
-        undefined,
-        undefined,
-        () => {
-          const fallbackUrl = './public/' + primaryUrl.replace(/^\.\//, '');
-          loader.load(fallbackUrl);
-        }
-      );
-    };
-
-    // Theia Prime - Frozen Ice Giant
-    const iceTexture = loadWithFallback(
-      './assets/new_3D/theia-prime-g-frozen-ice-giant-moons/textures/ice_planet_textur.jpeg'
-    );
-    const theiaGeom = new THREE.SphereGeometry(1.2, 48, 48);
-    const theiaMat = new THREE.MeshStandardMaterial({
-      map: iceTexture,
-      roughness: 0.4,
-      metalness: 0.1
-    });
-    this.theiaMesh = new THREE.Mesh(theiaGeom, theiaMat);
-    this.theiaMesh.rotation.z = 0.28;
-    this.systemGroup.add(this.theiaMesh);
-
-    // Icy Atmospheric Rim Lighting
-    const glowGeom = new THREE.SphereGeometry(1.26, 48, 48);
-    const glowMat = new THREE.ShaderMaterial({
-      uniforms: {
-        glowColor: { value: new THREE.Color(0x67e8f9) }
-      },
-      vertexShader: `
-        varying vec3 vNormal;
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        }
-      `,
-      fragmentShader: `
-        uniform vec3 glowColor;
-        varying vec3 vNormal;
-        void main() {
-          float intensity = pow(0.68 - dot(vNormal, vec3(0, 0, 1.0)), 2.2);
-          gl_FragColor = vec4(glowColor, intensity * 0.7);
-        }
-      `,
-      side: THREE.BackSide,
-      blending: THREE.AdditiveBlending,
-      transparent: true,
-      depthWrite: false
-    });
-    this.theiaGlow = new THREE.Mesh(glowGeom, glowMat);
-    this.theiaMesh.add(this.theiaGlow);
-
-    // Moons Definitions
-    this.moons = [];
-
-    // Moon 1: Eris (Frozen Ice Moon)
-    const erisTexture = loadWithFallback(
-      './assets/new_3D/theia-prime-g-frozen-ice-giant-moons/textures/4k_eris_fictional.jpeg'
-    );
-    const moon1 = new THREE.Mesh(
-      new THREE.SphereGeometry(0.24, 32, 32),
-      new THREE.MeshStandardMaterial({ map: erisTexture, roughness: 0.8 })
-    );
-    this.moons.push({ mesh: moon1, radius: 1.95, speed: 0.45, tilt: 0.15, phase: 0 });
-    this.systemGroup.add(moon1);
-
-    // Moon 2: Inner Moon
-    const moon2Texture = loadWithFallback(
-      './assets/new_3D/theia-prime-g-frozen-ice-giant-moons/textures/moon_2.jpeg'
-    );
-    const moon2 = new THREE.Mesh(
-      new THREE.SphereGeometry(0.16, 24, 24),
-      new THREE.MeshStandardMaterial({ map: moon2Texture, roughness: 0.9 })
-    );
-    this.moons.push({ mesh: moon2, radius: 2.5, speed: -0.32, tilt: -0.25, phase: 2.1 });
-    this.systemGroup.add(moon2);
-
-    // Moon 3: Outer Distant Moon
-    const moon3Texture = loadWithFallback(
-      './assets/new_3D/theia-prime-g-frozen-ice-giant-moons/textures/moon_3.jpeg'
-    );
-    const moon3 = new THREE.Mesh(
-      new THREE.SphereGeometry(0.2, 24, 24),
-      new THREE.MeshStandardMaterial({ map: moon3Texture, roughness: 0.7 })
-    );
-    this.moons.push({ mesh: moon3, radius: 3.1, speed: 0.22, tilt: 0.35, phase: 4.2 });
-    this.systemGroup.add(moon3);
-
-    // Orbital path rings
-    this.moons.forEach((m) => {
-      const ringGeom = new THREE.BufferGeometry();
-      const points = [];
-      for (let i = 0; i <= 64; i++) {
-        const theta = (i / 64) * Math.PI * 2;
-        points.push(Math.cos(theta) * m.radius, Math.sin(theta) * m.tilt, Math.sin(theta) * m.radius);
+    const texture = loader.load(
+      resolveAsset('./assets/new_3D/pixel-planet-kepler-36-b/textures/SE-0005.png'),
+      (tex) => {
+        tex.magFilter = THREE.NearestFilter;
+        tex.minFilter = THREE.NearestFilter;
+        tex.generateMipmaps = false;
+        tex.needsUpdate = true;
       }
-      ringGeom.setAttribute('position', new THREE.Float32BufferAttribute(points, 3));
-      const ringMat = new THREE.LineBasicMaterial({
-        color: 0x00e5ff,
-        transparent: true,
-        opacity: 0.18
-      });
-      const orbitRing = new THREE.Line(ringGeom, ringMat);
-      this.systemGroup.add(orbitRing);
+    );
+
+    // Planet Sphere
+    const geom = new THREE.SphereGeometry(1.0, 48, 48);
+    const mat = new THREE.MeshStandardMaterial({
+      map: texture,
+      roughness: 0.65,
+      metalness: 0.15
     });
+    this.keplerMesh = new THREE.Mesh(geom, mat);
+    this.keplerMesh.rotation.z = -0.25; // Exoplanetary axial tilt
+    this.keplerGroup.add(this.keplerMesh);
+
+    // Celestial Planetary Ring
+    const ringGeom = new THREE.RingGeometry(1.3, 1.9, 64);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0xffaa33,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.55
+    });
+    this.keplerRing = new THREE.Mesh(ringGeom, ringMat);
+    this.keplerRing.rotation.x = Math.PI / 2.3;
+    this.keplerMesh.add(this.keplerRing);
   }
 
   initEvents() {
     this.handleResize = () => {
       if (!this.container || !this.renderer || !this.camera) return;
-      const width = this.container.clientWidth || 300;
-      const height = this.container.clientHeight || 260;
+      const width = this.container.clientWidth || 280;
+      const height = this.container.clientHeight || 240;
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(width, height);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     };
     window.addEventListener('resize', this.handleResize);
-
-    this.container.addEventListener('mousemove', (e) => {
-      const rect = this.container.getBoundingClientRect();
-      this.mouse.targetX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-      this.mouse.targetY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-    }, { passive: true });
   }
 
   pause() {
@@ -421,27 +326,19 @@ export class TheiaPrimeCelestialAccent {
 
   render() {
     const elapsed = this.clock.getElapsedTime();
+    const mx = cursorState.lerpedX;
+    const my = cursorState.lerpedY;
 
-    this.mouse.x += (this.mouse.targetX - this.mouse.x) * 0.05;
-    this.mouse.y += (this.mouse.targetY - this.mouse.y) * 0.05;
-
-    // Theia Prime rotation
-    if (this.theiaMesh) {
-      this.theiaMesh.rotation.y = elapsed * 0.15;
+    // Continuous axial spin + subtle bobbing
+    if (this.keplerMesh) {
+      this.keplerMesh.rotation.y = elapsed * 0.35;
     }
 
-    // Moons orbital mechanics
-    this.moons.forEach((m) => {
-      const angle = elapsed * m.speed + m.phase;
-      m.mesh.position.x = Math.cos(angle) * m.radius;
-      m.mesh.position.z = Math.sin(angle) * m.radius;
-      m.mesh.position.y = Math.sin(angle) * m.tilt;
-      m.mesh.rotation.y = elapsed * 0.4;
-    });
-
-    // Subtle system tilt responding to mouse
-    this.systemGroup.rotation.x = this.mouse.y * 0.25;
-    this.systemGroup.rotation.y = this.mouse.x * 0.35;
+    if (this.keplerGroup) {
+      this.keplerGroup.position.y = Math.sin(elapsed * 1.2) * 0.1;
+      this.keplerGroup.rotation.x = my * 0.2;
+      this.keplerGroup.rotation.y = mx * 0.3;
+    }
 
     this.renderer.render(this.scene, this.camera);
   }

@@ -1,186 +1,341 @@
 :root {
-      --hud-orange: #FF4400;
-      --hud-light: #EAE9E4;
-      --hud-dark: #050505;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #EAE9E4;
-      color: #111111;
-      overflow-x: hidden;
-    }
-    /* Technical HUD Chamfered Frame */
-    .hud-chamfer {
-      clip-path: polygon(
-        18px 0%, calc(100% - 18px) 0%, 100% 18px,
-        100% calc(100% - 18px), calc(100% - 18px) 100%,
-        18px 100%, 0% calc(100% - 18px), 0% 18px
-      );
-    }
-    .hud-chamfer-sm {
-      clip-path: polygon(
-        10px 0%, calc(100% - 10px) 0%, 100% 10px,
-        100% calc(100% - 10px), calc(100% - 10px) 100%,
-        10px 100%, 0% calc(100% - 10px), 0% 10px
-      );
-    }
-    /* Technical Grid Overlay */
-    .hud-grid-light {
-      background-image:
-        linear-gradient(to right, rgba(17, 17, 17, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(17, 17, 17, 0.05) 1px, transparent 1px);
-      background-size: 64px 64px;
-    }
-    .hud-grid-dark {
-      background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-      background-size: 64px 64px;
-    }
-    /* Perspective Floor Grid for Community Section */
-    .perspective-floor {
-      background-image:
-        linear-gradient(to right, rgba(255, 68, 0, 0.22) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(17, 17, 17, 0.14) 1px, transparent 1px);
-      background-size: 56px 40px;
-    }
-    /* Crosshair Marker */
-    .crosshair {
-      position: relative;
-      display: inline-block;
-      width: 15px;
-      height: 15px;
-    }
-    .crosshair::before, .crosshair::after {
-      content: '';
-      position: absolute;
-      background-color: currentColor;
-    }
-    .crosshair::before {
-      top: 7px;
-      left: 0;
-      width: 15px;
-      height: 1px;
-    }
-    .crosshair::after {
-      top: 0;
-      left: 7px;
-      width: 1px;
-      height: 15px;
-    }
-    /* Giant Display Headline Styling matching Mockup 1 & 2 */
-    .hero-display {
-      font-family: 'Space Grotesk', 'Inter', sans-serif;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 0.92;
-    }
-    /* Seamless Astronaut Blend on Light #E8E7E5 */
-    .blend-astronaut-light {
-      mix-blend-mode: darken;
-      filter: contrast(1.04);
-    }
-    .blend-astronaut-dark {
-      mix-blend-mode: lighten;
-      filter: contrast(1.06);
-    }
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #111111;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #FF4400;
-    }
-    /* Pulse animation for active telemetry dot */
-    @keyframes orbitPulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.35); opacity: 0.65; }
-    }
-    .orbit-dot {
-      animation: orbitPulse 2.2s infinite ease-in-out;
-    }
-    @keyframes floatSlow {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-8px) rotate(1.2deg); }
-    }
-    .satellite-float {
-      animation: floatSlow 6s infinite ease-in-out;
-    }
-    /* 4K Ultra-Crisp Vector Graphics & Logos */
-    .vector-crisp {
-      shape-rendering: geometricPrecision;
-      text-rendering: geometricPrecision;
-      image-rendering: -webkit-optimize-contrast;
-      -webkit-font-smoothing: antialiased;
-    }
+  --hud-orange: #FF4400;
+  --hud-pink: #E285A9;
+  --hud-cyan: #00E5FF;
+  --hud-violet: #7744FF;
+  --hud-dark: #050508;
+  --hud-obsidian: #08080c;
+  --hud-glass: rgba(13, 14, 22, 0.72);
+  --mouse-x: 50vw;
+  --mouse-y: 50vh;
+}
 
+html {
+  background-color: #050508;
+  color: #f1f1f5;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 
-    /* 3D WebGL Canvas HUD Containers & Telemetry */
-    .webgl-canvas-layer {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #050508;
+  color: #f1f1f5;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
 
-    .hud-control-btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      border: 1px solid rgba(0, 0, 0, 0.25);
-      background: rgba(255, 255, 255, 0.85);
-      color: #111111;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    .hud-control-btn:hover {
-      background: #FF4400;
-      color: #ffffff;
-      border-color: #FF4400;
-    }
-    .hud-control-btn.active {
-      background: #FF4400;
-      color: #ffffff;
-      border-color: #FF4400;
-      font-weight: 700;
-    }
+/* =========================================================================
+   1. SPACEX MINIMALIST UI & TELEMETRY
+   ========================================================================= */
 
-    .hud-control-btn-dark {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background: rgba(17, 17, 21, 0.85);
-      color: #ffffff;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    .hud-control-btn-dark:hover {
-      background: #FF4400;
-      color: #ffffff;
-      border-color: #FF4400;
-    }
-    .hud-control-btn-dark.active {
-      background: #FF4400;
-      color: #ffffff;
-      border-color: #FF4400;
-      font-weight: 700;
-    }
+/* Fixed Glass Navbar */
+.spacex-navbar {
+  background: rgba(6, 6, 10, 0.82);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-    /* Animated Cyberpunk HUD Radar Line */
-    @keyframes radarSweep {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(1000%); }
-    }
-    .hud-radar-scan {
-      animation: radarSweep 4s linear infinite;
-    }
+/* Sleek Numbered Section Badges (01 /, 02 /, 03 /) */
+.spacex-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: #00e5ff;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: uppercase;
+}
+
+.spacex-badge::after {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, #00e5ff, transparent);
+}
+
+/* Glowing Pill CTA Button */
+.pill-cta-glow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #050508;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 20px -3px rgba(255, 255, 255, 0.65), 0 0 35px 2px rgba(255, 68, 0, 0.45);
+  cursor: pointer;
+}
+
+.pill-cta-glow:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 25px 2px #ffffff, 0 0 50px 8px rgba(255, 68, 0, 0.7);
+  background: #ffffff;
+  color: #000000;
+}
+
+/* Outline Pill CTA */
+.pill-cta-outline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 26px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.pill-cta-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #00e5ff;
+  color: #00e5ff;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+/* =========================================================================
+   2. DARK-GLASS CARDS & ILLUMINATED 3D SPOTLIGHT BORDERS
+   ========================================================================= */
+
+.dark-glass-card {
+  position: relative;
+  background: rgba(11, 12, 19, 0.68);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Dynamic Spotlight Border Reflection */
+.dark-glass-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    320px circle at var(--card-mouse-x, -500px) var(--card-mouse-y, -500px),
+    rgba(0, 229, 255, 0.55),
+    rgba(226, 133, 169, 0.3) 40%,
+    transparent 80%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dark-glass-card:hover::before {
+  opacity: 1;
+}
+
+.dark-glass-card:hover {
+  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 229, 255, 0.08);
+}
+
+/* =========================================================================
+   3. SEINEN MANGA AESTHETICS & VISUAL LAYERS
+   ========================================================================= */
+
+/* Rotating Radial Manga Speed-Lines */
+.manga-speedlines-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 140vmax;
+  height: 140vmax;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  opacity: 0.15;
+  mix-blend-mode: screen;
+  z-index: 1;
+}
+
+@keyframes spinSpeedLines {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.manga-speedlines-rotating {
+  animation: spinSpeedLines 90s linear infinite;
+}
+
+/* Halftone Screentone Overlay */
+.manga-screentone-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 16px 16px;
+  mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, #000 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 65% 65% at 50% 50%, #000 30%, transparent 80%);
+}
+
+/* Screentone Ring Accent */
+.manga-screentone-ring {
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  background-image: radial-gradient(rgba(0, 229, 255, 0.16) 1.5px, transparent 1.5px);
+  background-size: 8px 8px;
+}
+
+/* Manga Floating Kanji Calligraphy */
+.manga-kanji-glyph {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  background: linear-gradient(180deg, #ffffff 30%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 18px rgba(255, 68, 0, 0.45));
+}
+
+/* Cyberpunk Manga HUD Ground Grid */
+.hud-grid-dark {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Perspective Floor */
+.perspective-floor {
+  background-image:
+    linear-gradient(to right, rgba(255, 68, 0, 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 229, 255, 0.12) 1px, transparent 1px);
+  background-size: 48px 36px;
+}
+
+/* =========================================================================
+   4. FULL-PAGE MOUSE SPOTLIGHT & CURSOR SYSTEM
+   ========================================================================= */
+
+/* Ambient Cosmic Cursor Spotlight */
+.cosmic-spotlight {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    650px circle at var(--mouse-x, 50vw) var(--mouse-y, 50vh),
+    rgba(0, 229, 255, 0.045),
+    rgba(255, 68, 0, 0.025) 45%,
+    transparent 75%
+  );
+  transition: background 0.05s ease-out;
+}
+
+/* WebGL Canvas Background Layer (Strictly pointer-events: none) */
+.webgl-canvas-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Interactive 3D Viewport Containers (Allows interaction like OrbitControls) */
+.webgl-interactive-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+/* =========================================================================
+   5. SCROLL-TRIGGERED BLUR-TO-CRISP ANIMATIONS
+   ========================================================================= */
+
+.reveal-blur {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(28px);
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter, transform;
+}
+
+.reveal-blur.is-revealed {
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* =========================================================================
+   6. HEADLINE & TYPOGRAPHY STYLING
+   ========================================================================= */
+
+.hero-display {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #050508;
+}
+::-webkit-scrollbar-thumb {
+  background: #272733;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ff4400;
+}
+
+/* Pulse animation for active telemetry dot */
+@keyframes orbitPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.65; }
+}
+.orbit-dot {
+  animation: orbitPulse 2.2s infinite ease-in-out;
+}
+
+/* 4K Vector Crispness */
+.vector-crisp {
+  shape-rendering: geometricPrecision;
+  text-rendering: geometricPrecision;
+  image-rendering: -webkit-optimize-contrast;
+  -webkit-font-smoothing: antialiased;
+}
