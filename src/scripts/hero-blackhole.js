@@ -12,7 +12,7 @@ function resolveAsset(path) {
  * - interactive-blackhole (Gravitational ripple & Keplerian stellar collapse/expansion)
  * - theia-prime-g-frozen-ice-giant-moons (Ice giant with 3D rings & 3 orbiting moons)
  * - millers-planet-interstellar (Ocean planet with PBR normal/roughness textures)
- * - Seinen Manga visual layer (3D Floating Asteroid Shards, Kanji "宇宙" & "限界", Screentone depth)
+ * - Seinen Manga visual layer (3D Floating Kanji Plate "限界" on right side, clean pitch-black typography)
  * - Whole-universe Mouse-Following 3D Camera Rig
  */
 export class HeroBlackHoleController {
@@ -555,43 +555,9 @@ export class HeroBlackHoleController {
     this.mangaGroup = new THREE.Group();
     this.scene.add(this.mangaGroup);
 
-    // 1. Floating Manga Asteroid Panel Shards
-    this.panelShards = [];
-    const shardCount = 14;
-    for (let i = 0; i < shardCount; i++) {
-      const geom = new THREE.DodecahedronGeometry(THREE.MathUtils.randFloat(0.35, 0.75), 0);
-      const wireMat = new THREE.MeshBasicMaterial({
-        color: i % 2 === 0 ? 0xff4400 : 0x00e5ff,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.45
-      });
-      const shard = new THREE.Mesh(geom, wireMat);
-
-      const angle = (i / shardCount) * Math.PI * 2;
-      const radius = THREE.MathUtils.randFloat(7, 13);
-      shard.position.set(
-        Math.cos(angle) * radius,
-        THREE.MathUtils.randFloat(-3.5, 4.5),
-        Math.sin(angle) * radius * 0.7
-      );
-
-      shard.userData = {
-        rotSpeedX: (Math.random() - 0.5) * 0.015,
-        rotSpeedY: (Math.random() - 0.5) * 0.018,
-        bobSpeed: Math.random() * 0.8 + 0.4,
-        bobPhase: Math.random() * Math.PI * 2,
-        baseY: shard.position.y
-      };
-
-      this.mangaGroup.add(shard);
-      this.panelShards.push(shard);
-    }
-
-    // 2. 3D Floating Japanese Kanji Plates ("宇宙" and "限界")
+    // 3D Floating Japanese Kanji Plate ("限界" on right side, left side kept 100% clean pitch-black)
     this.kanjiPlates = [];
     const kanjiList = [
-      { text: '宇宙', sub: 'COSMOS // UNIVERSE', pos: new THREE.Vector3(-5.2, 1.8, 1.5) },
       { text: '限界', sub: 'BEYOND LIMITS', pos: new THREE.Vector3(5.0, -1.2, 2.2) }
     ];
 
@@ -787,13 +753,7 @@ export class HeroBlackHoleController {
       }
     }
 
-    // 6. Manga Shards & Kanji Floating Dynamics
-    this.panelShards.forEach((shard) => {
-      shard.rotation.x += shard.userData.rotSpeedX;
-      shard.rotation.y += shard.userData.rotSpeedY;
-      shard.position.y = shard.userData.baseY + Math.sin(elapsed * shard.userData.bobSpeed + shard.userData.bobPhase) * 0.35;
-    });
-
+    // 6. Right-Side Kanji Plate Floating Dynamics
     this.kanjiPlates.forEach((plate) => {
       plate.position.y = plate.userData.baseY + Math.sin(elapsed * 0.8 + plate.userData.phase) * 0.25;
       plate.material.opacity = 0.82 + Math.sin(elapsed * 1.8 + plate.userData.phase) * 0.14;
