@@ -15,6 +15,7 @@ html {
   color: #f1f1f5;
   scroll-behavior: smooth;
   overflow-x: hidden;
+  cursor: default;
 }
 
 body {
@@ -24,6 +25,12 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
+  cursor: default;
+}
+
+/* Default native pointer for interactive elements */
+a, button, [role="button"], input, select, textarea, .cursor-pointer {
+  cursor: pointer;
 }
 
 /* =========================================================================
@@ -116,8 +123,23 @@ body {
 }
 
 /* =========================================================================
-   2. DARK-GLASS CARDS & ILLUMINATED 3D SPOTLIGHT BORDERS
+   2. ROCK-SOLID DARK-GLASS CARDS & FLAT HUD HOVER EFFECT
    ========================================================================= */
+
+@property --laser-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes laserBorderSweep {
+  0% {
+    --laser-angle: 0deg;
+  }
+  100% {
+    --laser-angle: 360deg;
+  }
+}
 
 .dark-glass-card {
   position: relative;
@@ -127,38 +149,106 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 12px;
   overflow: hidden;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-  transform-style: preserve-3d;
+  /* Sits 100% rock-solid and flat when not hovered */
+  transform: translate3d(0, 0, 0);
+  transform-style: flat;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
   will-change: transform;
 }
 
-/* Dynamic Spotlight Border Reflection */
-.dark-glass-card::before {
+/* Animated 1px Laser Border Glow that sweeps around the card perimeter */
+.dark-glass-card::before,
+.dark-glass-card .laser-border-sweep {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: radial-gradient(
-    320px circle at var(--card-mouse-x, -500px) var(--card-mouse-y, -500px),
-    rgba(0, 229, 255, 0.55),
-    rgba(226, 133, 169, 0.3) 40%,
-    transparent 80%
+  background: conic-gradient(
+    from var(--laser-angle, 0deg) at 50% 50%,
+    transparent 0deg,
+    transparent 280deg,
+    rgba(0, 229, 255, 0.35) 310deg,
+    rgba(0, 229, 255, 0.9) 340deg,
+    #ffffff 355deg,
+    transparent 360deg
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 6;
 }
 
-.dark-glass-card:hover::before {
-  opacity: 1;
+/* Crisp Corner HUD Brackets (┌ ┐ └ ┘) that lock into the 4 corners */
+.hud-corner {
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 10;
+  border-color: #00e5ff;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.35s ease;
 }
 
-.dark-glass-card:hover {
-  box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 229, 255, 0.08);
+.hud-corner-tl {
+  top: 5px;
+  left: 5px;
+  border-top: 1.5px solid #00e5ff;
+  border-left: 1.5px solid #00e5ff;
+  transform: translate(-5px, -5px);
+}
+
+.hud-corner-tr {
+  top: 5px;
+  right: 5px;
+  border-top: 1.5px solid #00e5ff;
+  border-right: 1.5px solid #00e5ff;
+  transform: translate(5px, -5px);
+}
+
+.hud-corner-bl {
+  bottom: 5px;
+  left: 5px;
+  border-bottom: 1.5px solid #00e5ff;
+  border-left: 1.5px solid #00e5ff;
+  transform: translate(-5px, 5px);
+}
+
+.hud-corner-br {
+  bottom: 5px;
+  right: 5px;
+  border-bottom: 1.5px solid #00e5ff;
+  border-right: 1.5px solid #00e5ff;
+  transform: translate(5px, 5px);
+}
+
+/* Desktop pointer hover state: Flat -4px vertical lift + Laser Border + HUD Target Lock */
+@media (hover: hover) and (pointer: fine) {
+  .dark-glass-card:hover {
+    transform: translate3d(0, -4px, 0);
+    border-color: rgba(0, 229, 255, 0.35);
+    box-shadow: 0 20px 45px -12px rgba(0, 0, 0, 0.8), 0 0 25px rgba(0, 229, 255, 0.16);
+  }
+
+  .dark-glass-card:hover::before,
+  .dark-glass-card:hover .laser-border-sweep {
+    opacity: 1;
+    animation: laserBorderSweep 2.2s linear infinite;
+  }
+
+  .dark-glass-card:hover .hud-corner {
+    opacity: 1;
+    transform: translate(0, 0);
+    filter: drop-shadow(0 0 4px #00e5ff);
+  }
 }
 
 /* =========================================================================
@@ -236,19 +326,10 @@ body {
    4. FULL-PAGE MOUSE SPOTLIGHT & CURSOR SYSTEM
    ========================================================================= */
 
-/* Ambient Cosmic Cursor Spotlight */
+/* Ambient Cosmic Cursor Spotlight (Disabled - removed custom pointer effects) */
 .cosmic-spotlight {
-  position: fixed;
-  inset: 0;
+  display: none !important;
   pointer-events: none;
-  z-index: 2;
-  background: radial-gradient(
-    650px circle at var(--mouse-x, 50vw) var(--mouse-y, 50vh),
-    rgba(0, 229, 255, 0.045),
-    rgba(255, 68, 0, 0.025) 45%,
-    transparent 75%
-  );
-  transition: background 0.05s ease-out;
 }
 
 /* WebGL Canvas Background Layer (Strictly pointer-events: none) */

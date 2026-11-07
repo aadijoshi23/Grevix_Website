@@ -688,7 +688,23 @@ import { AboutPlanetsController } from './about-planets.js';
     }
 
     init3DAssets();
+    initCardHUDSystem();
     updateBadgeCount();
+  }
+
+  function initCardHUDSystem() {
+    // Ensures all cards have crisp corner HUD brackets (┌ ┐ └ ┘) that lock into position on hover
+    document.querySelectorAll('.dark-glass-card').forEach(function (card) {
+      if (!card.querySelector('.hud-corner')) {
+        const corners = ['hud-corner-tl', 'hud-corner-tr', 'hud-corner-bl', 'hud-corner-br'];
+        corners.forEach(function (cls) {
+          const span = document.createElement('span');
+          span.className = 'hud-corner ' + cls;
+          span.setAttribute('aria-hidden', 'true');
+          card.appendChild(span);
+        });
+      }
+    });
   }
 
   if (document.readyState === 'loading') {

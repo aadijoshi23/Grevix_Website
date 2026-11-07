@@ -37,9 +37,6 @@
 </head>
 <body class="bg-[#050508] text-[#F1F1F5] selection:bg-grevix-orange selection:text-white">
 
-  <!-- Ambient Cosmic Spotlight (Tracks --mouse-x and --mouse-y globally) -->
-  <div class="cosmic-spotlight" aria-hidden="true"></div>
-
   <!-- FIXED SPACEX MINIMALIST GLASS NAVBAR -->
   <header id="hud-header" class="fixed top-0 left-0 right-0 z-50 spacex-navbar">
     <div class="max-w-[1440px] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
@@ -174,8 +171,8 @@
       <div class="font-mono text-[10px] text-grevix-orange tracking-[0.3em] mt-1">BEYOND LIMITS</div>
     </div>
 
-    <!-- Foreground UI (Multi-Depth Parallax: 15px) -->
-    <div class="relative z-20 max-w-[1400px] mx-auto w-full pt-10 sm:pt-14" data-parallax-depth="15">
+    <!-- Foreground UI (Rock-Solid Telemetry Layer) -->
+    <div class="relative z-20 max-w-[1400px] mx-auto w-full pt-10 sm:pt-14">
       
       <!-- SpaceX System Telemetry Strip -->
       <div class="reveal-blur inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full border border-white/15 bg-black/40 backdrop-blur-md font-mono text-[11px] tracking-wider text-white/80 mb-6">
@@ -220,7 +217,11 @@
     <div class="relative z-20 max-w-[1400px] mx-auto w-full pt-10 sm:pt-14 grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
       
       <!-- Card 01: Theia Prime -->
-      <div class="reveal-blur reveal-delay-1 dark-glass-card p-5 sm:p-6" data-parallax-depth="15">
+      <div class="reveal-blur reveal-delay-1 dark-glass-card p-5 sm:p-6">
+        <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+        <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+        <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+        <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
         <div class="spacex-badge mb-2">01 / THEIA PRIME ICE GIANT</div>
         <div class="font-display font-bold text-lg text-white">Frozen Atmospheric Giant</div>
         <div class="font-mono text-xs text-grevix-cyan mt-1">3D RINGS // 3 SYNCHRONOUS MOONS</div>
@@ -230,7 +231,11 @@
       </div>
 
       <!-- Card 02: Miller's Planet -->
-      <div class="reveal-blur reveal-delay-2 dark-glass-card p-5 sm:p-6" data-parallax-depth="15">
+      <div class="reveal-blur reveal-delay-2 dark-glass-card p-5 sm:p-6">
+        <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+        <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+        <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+        <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
         <div class="spacex-badge mb-2">02 / MILLER'S WORLD</div>
         <div class="font-display font-bold text-lg text-white">Relativistic Ocean World</div>
         <div class="font-mono text-xs text-grevix-pink mt-1">TIME DILATION // 1HR = 7 YEARS</div>
@@ -240,7 +245,11 @@
       </div>
 
       <!-- Card 03: Gravitational Core -->
-      <div class="reveal-blur reveal-delay-3 dark-glass-card p-5 sm:p-6" data-parallax-depth="15">
+      <div class="reveal-blur reveal-delay-3 dark-glass-card p-5 sm:p-6">
+        <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+        <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+        <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+        <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
         <div class="spacex-badge mb-2">03 / ACCRETION CORE</div>
         <div class="font-display font-bold text-lg text-white">Event Horizon & Shockwave</div>
         <div class="font-mono text-xs text-grevix-orange mt-1">MULTI-OCTAVE GLSL // CLICK SHOCKWAVE</div>
@@ -287,16 +296,20 @@
           </div>
         </div>
 
-        <!-- 3D Kepler-36b Exoplanet Interactive Viewport (pixel-planet-kepler-36-b) -->
+        <!-- 3D High-Segment Procedural Ringed Planet Interactive Viewport -->
         <div class="shrink-0 w-full lg:w-80 p-4 dark-glass-card flex flex-col items-center">
+          <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
           <div class="w-full flex items-center justify-between font-mono text-[10px] text-white/50 mb-2">
-            <span class="text-grevix-cyan">TELEMETRY // KEPLER-36B</span>
-            <span class="px-1.5 py-0.5 bg-cyan-400/10 text-cyan-300 border border-cyan-400/30 rounded">PIXEL 3D</span>
+            <span class="text-grevix-cyan">TELEMETRY // EXOPLANET PROTOTYPE</span>
+            <span class="px-1.5 py-0.5 bg-cyan-400/10 text-cyan-300 border border-cyan-400/30 rounded">RETINA 4K</span>
           </div>
-          <!-- Canvas container for Kepler 3D model -->
+          <!-- Canvas container for procedural ringed 3D planet -->
           <div id="kepler-planet-container" class="w-full h-44 relative overflow-hidden rounded-lg"></div>
           <div class="w-full text-center mt-2 font-mono text-[11px] text-white/70">
-            NEAREST-FILTER PIXEL EXOPLANET + GOLDEN RING
+            HIGH-SEGMENT PROCEDURAL RINGED PLANET // PBR SHADER
           </div>
         </div>
       </div>
@@ -306,6 +319,10 @@
         
         <!-- Mission Card 01 -->
         <div class="reveal-blur hackathon-card dark-glass-card p-6 sm:p-8" data-category="ai">
+          <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
           <div class="flex items-center justify-between mb-4">
             <div class="spacex-badge">MISSION 01 /</div>
             <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-orange-500/10 text-grevix-orange border border-orange-500/30">PRIZE POOL: $35,000</span>
@@ -329,6 +346,10 @@
 
         <!-- Mission Card 02 -->
         <div class="reveal-blur reveal-delay-1 hackathon-card dark-glass-card p-6 sm:p-8" data-category="spacetech">
+          <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
           <div class="flex items-center justify-between mb-4">
             <div class="spacex-badge">MISSION 02 /</div>
             <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-cyan-500/10 text-grevix-cyan border border-cyan-500/30">PRIZE POOL: $40,000</span>
@@ -352,6 +373,10 @@
 
         <!-- Mission Card 03 -->
         <div class="reveal-blur reveal-delay-2 hackathon-card dark-glass-card p-6 sm:p-8" data-category="quantum">
+          <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
           <div class="flex items-center justify-between mb-4">
             <div class="spacex-badge">MISSION 03 /</div>
             <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/30">PRIZE POOL: $30,000</span>
@@ -375,6 +400,10 @@
 
         <!-- Mission Card 04 -->
         <div class="reveal-blur reveal-delay-3 hackathon-card dark-glass-card p-6 sm:p-8" data-category="bio">
+          <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
           <div class="flex items-center justify-between mb-4">
             <div class="spacex-badge">MISSION 04 /</div>
             <span class="font-mono text-xs px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">PRIZE POOL: $25,000</span>
@@ -627,13 +656,17 @@
       
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         
-        <!-- Left: Celestial Engine 3D Viewport (Miller's Planet & Kepler-36b) -->
+        <!-- Left: Celestial Engine 3D Viewport (Miller's Planet & Procedural Exoplanet) -->
         <div class="dark-glass-card p-6 sm:p-8 flex flex-col justify-between">
+          <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+          <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
           <div class="space-y-3">
             <div class="spacex-badge">06 / CELESTIAL ORBITS</div>
             <h3 class="font-display font-bold text-2xl sm:text-3xl text-white">Multi-Planet Telemetry Engine</h3>
             <p class="text-xs sm:text-sm text-white/70 leading-relaxed">
-              Switch focus between Miller’s Ocean World and Kepler-36b to inspect surface texturing, axial tilt, and real-time Keplerian orbital coordinates.
+              Switch focus between Miller’s Ocean World and the Procedural Ringed Exoplanet to inspect surface texturing, axial tilt, and real-time Keplerian orbital coordinates.
             </p>
           </div>
 
@@ -649,7 +682,7 @@
               MILLER'S WORLD
             </button>
             <button type="button" id="btn-focus-kepler" class="hud-control-btn flex-1 text-center py-2 rounded">
-              KEPLER-36B
+              EXOPLANET RING
             </button>
           </div>
         </div>

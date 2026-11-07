@@ -5,17 +5,104 @@ import * as THREE from 'three';
  * Resolves both root-relative './assets/...' and './public/assets/...' paths
  */
 function resolveAssetUrl(relPath) {
-  const clean = relPath.replace(/^\.\/public\//, './');
-  return clean;
+  return relPath.replace(/^\.\/public\//, './');
 }
 
 /**
- * About Section: Miller's Planet & Kepler-36b Celestial Engine
+ * Procedural High-Resolution Exoplanet Surface Generator
+ * Generates rich 2048x1024 planetary bands with crisp micro-features
+ */
+function createProceduralExoTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 2048;
+  canvas.height = 1024;
+  const ctx = canvas.getContext('2d');
+
+  const baseGrad = ctx.createLinearGradient(0, 0, 0, 1024);
+  baseGrad.addColorStop(0.0, '#0c1a2e');
+  baseGrad.addColorStop(0.18, '#1e3a5f');
+  baseGrad.addColorStop(0.36, '#0284c7');
+  baseGrad.addColorStop(0.50, '#f97316'); // Grevix Warm Flame
+  baseGrad.addColorStop(0.64, '#e285a9'); // Grevix Pink
+  baseGrad.addColorStop(0.82, '#0369a1');
+  baseGrad.addColorStop(1.0, '#020617');
+  ctx.fillStyle = baseGrad;
+  ctx.fillRect(0, 0, 2048, 1024);
+
+  // Micro-harmonic atmospheric bands
+  for (let y = 0; y < 1024; y += 2) {
+    const normY = y / 1024;
+    const bandSine = Math.sin(normY * 36.0) * 0.5 + 0.5;
+    const microSine = Math.sin(normY * 140.0 + Math.cos(normY * 20.0) * 3.5) * 0.5 + 0.5;
+    const alpha = (bandSine * 0.35 + microSine * 0.3) * 0.45;
+
+    ctx.fillStyle = (normY > 0.42 && normY < 0.60)
+      ? `rgba(255, 120, 50, ${alpha})`
+      : `rgba(0, 229, 255, ${alpha})`;
+    ctx.fillRect(0, y, 2048, 2);
+  }
+
+  // Atmospheric storms and vortices
+  for (let i = 0; i < 32; i++) {
+    const cx = (i * 153.7) % 2048;
+    const cy = 190 + ((i * 73.1) % 640);
+    const rw = 40 + (i % 5) * 20;
+    const rh = 12 + (i % 4) * 7;
+    const stormGrad = ctx.createRadialGradient(cx, cy, 2, cx, cy, rw);
+    stormGrad.addColorStop(0, 'rgba(255, 255, 255, 0.45)');
+    stormGrad.addColorStop(0.4, 'rgba(0, 229, 255, 0.28)');
+    stormGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = stormGrad;
+    ctx.beginPath();
+    ctx.ellipse(cx, cy, rw, rh, (i % 3) * 0.2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  return texture;
+}
+
+function createProceduralExoRingTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 64;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, 1024, 64);
+
+  const grad = ctx.createLinearGradient(0, 0, 1024, 0);
+  grad.addColorStop(0.0, 'rgba(0, 0, 0, 0)');
+  grad.addColorStop(0.07, 'rgba(0, 229, 255, 0.3)');
+  grad.addColorStop(0.26, 'rgba(255, 255, 255, 0.88)');
+  grad.addColorStop(0.45, 'rgba(255, 120, 40, 0.75)');
+  grad.addColorStop(0.50, 'rgba(0, 0, 0, 0.05)'); // Cassini Division
+  grad.addColorStop(0.56, 'rgba(0, 229, 255, 0.7)');
+  grad.addColorStop(0.78, 'rgba(226, 133, 169, 0.75)');
+  grad.addColorStop(0.92, 'rgba(0, 229, 255, 0.4)');
+  grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 1024, 64);
+
+  for (let x = 70; x < 950; x += 3) {
+    const alpha = Math.sin(x * 0.4) * 0.16 + 0.1;
+    ctx.fillStyle = `rgba(0, 0, 0, ${alpha})`;
+    ctx.fillRect(x, 0, 1.5, 64);
+  }
+
+  return new THREE.CanvasTexture(canvas);
+}
+
+/**
+ * About Section: Miller's Planet & Procedural Ringed Celestial Engine
  * Features:
- * - Miller's Planet: High-res ocean world texture + Atmospheric Fresnel Rim Lighting
- * - Kepler-36b: Pixel-art exoplanet texture with NearestFilter + Celestial Ring
+ * - Miller's Planet: High-res ocean world texture + Atmospheric Fresnel Rim Lighting (128x128 segments)
+ * - Procedural Ringed Planet: High-res shader sphere + 128x64 Cassini ring (replaces low-res Kepler-36b)
+ * - Native Retina / 4K resolution (devicePixelRatio up to 3)
+ * - Max texture anisotropy & LinearMipmapLinearFilter
  * - Slow orbital rotation + interactive mouse parallax tilt
- * - Multi-view camera focus switching (Dual Orbit, Miller's World, Kepler-36b)
+ * - Multi-view camera focus switching (Dual Orbit, Miller's World, Exoplanet World)
  */
 export class AboutPlanetsController {
   constructor(containerId) {
@@ -51,7 +138,7 @@ export class AboutPlanetsController {
       powerPreference: 'high-performance'
     });
     this.renderer.setSize(width, height);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 2, 3));
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.2;
 
@@ -67,47 +154,58 @@ export class AboutPlanetsController {
   }
 
   initLighting() {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     this.scene.add(ambientLight);
 
     // Primary Solar Keylight
-    const keyLight = new THREE.DirectionalLight(0xfff4e0, 2.4);
+    const keyLight = new THREE.DirectionalLight(0xfff4e0, 2.6);
     keyLight.position.set(8, 4, 6);
     this.scene.add(keyLight);
 
     // Grevix Secondary Rim Light (Cyan/Blue oceanic backlight)
-    const rimLight = new THREE.DirectionalLight(0x00d2ff, 1.8);
+    const rimLight = new THREE.DirectionalLight(0x00d2ff, 2.0);
     rimLight.position.set(-8, -2, -6);
     this.scene.add(rimLight);
 
     // Grevix Accent Warm Light
-    const orangeLight = new THREE.PointLight(0xff4400, 1.2, 20);
+    const orangeLight = new THREE.PointLight(0xff4400, 1.4, 20);
     orangeLight.position.set(2, 3, -2);
     this.scene.add(orangeLight);
   }
 
   loadTextures() {
     const textureLoader = new THREE.TextureLoader();
+    const maxAniso = this.renderer.capabilities.getMaxAnisotropy();
+
+    const configureTexture = (tex) => {
+      if (!tex) return;
+      tex.anisotropy = maxAniso;
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.generateMipmaps = true;
+      tex.needsUpdate = true;
+    };
 
     const loadTextureWithFallback = (path, onLoaded) => {
       const primaryUrl = resolveAssetUrl(path);
       return textureLoader.load(
         primaryUrl,
         (tex) => {
+          configureTexture(tex);
           if (onLoaded) onLoaded(tex);
         },
         undefined,
         () => {
-          // Fallback with ./public/ prefix if primary fails
           const fallbackUrl = './public/' + primaryUrl.replace(/^\.\//, '');
           textureLoader.load(fallbackUrl, (tex) => {
+            configureTexture(tex);
             if (onLoaded) onLoaded(tex);
           });
         }
       );
     };
 
-    // 1. Miller's Planet (Interstellar)
+    // 1. Miller's Planet (Interstellar Ocean Planet)
     const millersDiffuse = loadTextureWithFallback(
       './assets/new_3D/millers-planet-interstellar/textures/ef362dae-eeee-4ed8-8810-42ee5ea61847.png'
     );
@@ -118,26 +216,26 @@ export class AboutPlanetsController {
       './assets/new_3D/millers-planet-interstellar/textures/b00d38e4-2feb-466f-a79a-6467b926f3cf.png'
     );
 
-    // Miller's Planet Mesh
-    const millersGeom = new THREE.SphereGeometry(1.6, 64, 64);
+    // Miller's Planet Mesh with 128x128 Segments
+    const millersGeom = new THREE.SphereGeometry(1.6, 128, 128);
     const millersMat = new THREE.MeshStandardMaterial({
       map: millersDiffuse,
       normalMap: millersNormal,
       roughnessMap: millersRoughness,
-      roughness: 0.35,
+      roughness: 0.32,
       metalness: 0.1
     });
 
     this.millersMesh = new THREE.Mesh(millersGeom, millersMat);
     this.millersMesh.position.set(-1.4, 0.1, 0);
-    this.millersMesh.rotation.z = 0.15; // Realistic axial tilt
+    this.millersMesh.rotation.z = 0.15;
     this.orbitGroup.add(this.millersMesh);
 
-    // Atmospheric Rim Lighting Fresnel Glow
-    const atmosphereGeom = new THREE.SphereGeometry(1.68, 64, 64);
+    // Atmospheric Rim Lighting Fresnel Glow (128x128 segments)
+    const atmosphereGeom = new THREE.SphereGeometry(1.68, 128, 128);
     const atmosphereMat = new THREE.ShaderMaterial({
       uniforms: {
-        glowColor: { value: new THREE.Color(0x38bdf8) }, // Light Cyan Ocean Atmosphere
+        glowColor: { value: new THREE.Color(0x38bdf8) },
         viewVector: { value: this.camera.position }
       },
       vertexShader: `
@@ -155,7 +253,7 @@ export class AboutPlanetsController {
         uniform vec3 glowColor;
         varying float intensity;
         void main() {
-          gl_FragColor = vec4(glowColor * 1.4, intensity * 0.85);
+          gl_FragColor = vec4(glowColor * 1.5, intensity * 0.88);
         }
       `,
       side: THREE.BackSide,
@@ -166,48 +264,86 @@ export class AboutPlanetsController {
     this.millersAtmosphere = new THREE.Mesh(atmosphereGeom, atmosphereMat);
     this.millersMesh.add(this.millersAtmosphere);
 
-    // 2. Kepler-36b (Pixel Exoplanet)
-    const keplerTexture = loadTextureWithFallback(
-      './assets/new_3D/pixel-planet-kepler-36-b/textures/SE-0005.png',
-      (tex) => {
-        tex.magFilter = THREE.NearestFilter;
-        tex.minFilter = THREE.NearestFilter;
-        tex.generateMipmaps = false;
-        tex.needsUpdate = true;
-      }
-    );
+    // 2. High-Segment Procedural Ringed Planet (Replaces low-res Kepler-36b)
+    const exoTexture = createProceduralExoTexture();
+    configureTexture(exoTexture);
 
-    const keplerGeom = new THREE.SphereGeometry(0.85, 48, 48);
+    const keplerGeom = new THREE.SphereGeometry(0.95, 128, 128);
     const keplerMat = new THREE.MeshStandardMaterial({
-      map: keplerTexture,
-      roughness: 0.7,
-      metalness: 0.15
+      map: exoTexture,
+      roughness: 0.38,
+      metalness: 0.12
     });
 
     this.keplerMesh = new THREE.Mesh(keplerGeom, keplerMat);
     this.keplerMesh.position.set(2.2, -0.4, 0.4);
-    this.keplerMesh.rotation.z = -0.22;
+    this.keplerMesh.rotation.z = -0.26;
     this.orbitGroup.add(this.keplerMesh);
 
-    // Kepler-36b Celestial Planetary Ring
-    const ringGeom = new THREE.RingGeometry(1.1, 1.65, 64);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: 0xffaa44,
+    // High-Segment Planetary Ring with (128, 64) segments
+    const exoRingTexture = createProceduralExoRingTexture();
+    configureTexture(exoRingTexture);
+
+    const ringGeom = new THREE.RingGeometry(1.25, 2.05, 128, 64);
+    const ringPos = ringGeom.attributes.position;
+    const ringUvs = ringGeom.attributes.uv;
+    for (let i = 0; i < ringPos.count; i++) {
+      const rx = ringPos.getX(i);
+      const ry = ringPos.getY(i);
+      const rad = Math.sqrt(rx * rx + ry * ry);
+      const u = (rad - 1.25) / (2.05 - 1.25);
+      ringUvs.setXY(i, u, 0.5);
+    }
+    ringUvs.needsUpdate = true;
+
+    const ringMat = new THREE.MeshStandardMaterial({
+      map: exoRingTexture,
       side: THREE.DoubleSide,
       transparent: true,
-      opacity: 0.45
+      opacity: 0.85,
+      roughness: 0.5,
+      metalness: 0.1
     });
     this.keplerRing = new THREE.Mesh(ringGeom, ringMat);
     this.keplerRing.rotation.x = Math.PI / 2.3;
     this.keplerMesh.add(this.keplerRing);
+
+    // Cyan Atmospheric Fresnel Rim Glow (128x128 segments)
+    const exoAtmoGeom = new THREE.SphereGeometry(1.01, 128, 128);
+    const exoAtmoMat = new THREE.ShaderMaterial({
+      uniforms: {
+        glowColor: { value: new THREE.Color(0x00e5ff) }
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 glowColor;
+        varying vec3 vNormal;
+        void main() {
+          float intensity = pow(0.7 - dot(vNormal, vec3(0, 0, 1.0)), 2.6);
+          gl_FragColor = vec4(glowColor * 1.5, intensity * 0.88);
+        }
+      `,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      transparent: true,
+      depthWrite: false
+    });
+    const exoAtmoMesh = new THREE.Mesh(exoAtmoGeom, exoAtmoMat);
+    this.keplerMesh.add(exoAtmoMesh);
 
     // Orbital Path Trajectory Ring (Stylized HUD telemetry ring)
     const orbitPathGeom = new THREE.BufferGeometry();
     const orbitPoints = [];
     const radiusX = 2.4;
     const radiusZ = 1.6;
-    for (let i = 0; i <= 100; i++) {
-      const theta = (i / 100) * Math.PI * 2;
+    for (let i = 0; i <= 128; i++) {
+      const theta = (i / 128) * Math.PI * 2;
       orbitPoints.push(
         Math.cos(theta) * radiusX,
         Math.sin(theta) * 0.15,
@@ -218,7 +354,7 @@ export class AboutPlanetsController {
     const orbitPathMat = new THREE.LineBasicMaterial({
       color: 0xff4400,
       transparent: true,
-      opacity: 0.25
+      opacity: 0.3
     });
     this.orbitLine = new THREE.Line(orbitPathGeom, orbitPathMat);
     this.orbitLine.position.set(0.4, -0.2, 0);
@@ -233,7 +369,7 @@ export class AboutPlanetsController {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(width, height);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 2, 3));
     };
     window.addEventListener('resize', this.handleResize);
 
@@ -282,7 +418,7 @@ export class AboutPlanetsController {
       this.millersMesh.rotation.y = elapsed * 0.12;
     }
 
-    // Kepler-36b: Axial spin + slow orbital revolution around common barycenter
+    // Exoplanet: Axial spin + slow orbital revolution around common barycenter
     if (this.keplerMesh) {
       this.keplerMesh.rotation.y = elapsed * 0.28;
       const orbitSpeed = elapsed * 0.18;

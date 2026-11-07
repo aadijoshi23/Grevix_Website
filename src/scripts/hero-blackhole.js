@@ -65,7 +65,7 @@ export class HeroBlackHoleController {
       powerPreference: 'high-performance'
     });
     this.renderer.setSize(width, height);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 2, 3));
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.3;
 
@@ -190,13 +190,13 @@ export class HeroBlackHoleController {
     this.scene.add(this.blackHoleGroup);
 
     // 1. Singularity Sphere
-    const singularityGeom = new THREE.SphereGeometry(this.BLACK_HOLE_RADIUS, 64, 48);
+    const singularityGeom = new THREE.SphereGeometry(this.BLACK_HOLE_RADIUS, 128, 128);
     const singularityMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
     this.singularityMesh = new THREE.Mesh(singularityGeom, singularityMat);
     this.blackHoleGroup.add(this.singularityMesh);
 
     // 2. Event Horizon Atmospheric Fresnel Glow (from three-js-black-hole-with-shaders)
-    const eventHorizonGeom = new THREE.SphereGeometry(this.BLACK_HOLE_RADIUS * 1.06, 64, 48);
+    const eventHorizonGeom = new THREE.SphereGeometry(this.BLACK_HOLE_RADIUS * 1.06, 128, 128);
     this.eventHorizonMat = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0 },
@@ -232,11 +232,17 @@ export class HeroBlackHoleController {
     this.eventHorizonMesh = new THREE.Mesh(eventHorizonGeom, this.eventHorizonMat);
     this.blackHoleGroup.add(this.eventHorizonMesh);
 
-    // 3. Multi-Octave GLSL Accretion Disk Shader with Gravitational Warping
-    const diskGeom = new THREE.RingGeometry(this.DISK_INNER_RADIUS, this.DISK_OUTER_RADIUS, 240, 96);
+    // 3. Multi-Octave GLSL Accretion Disk Shader with Physical Pixel Resolution
+    const diskGeom = new THREE.RingGeometry(this.DISK_INNER_RADIUS, this.DISK_OUTER_RADIUS, 256, 128);
+    const dpr = Math.min(window.devicePixelRatio || 2, 2.5);
+    const width = this.container.clientWidth || window.innerWidth;
+    const height = this.container.clientHeight || window.innerHeight;
+
     this.diskMaterial = new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0.0 },
+        u_resolution: { value: new THREE.Vector2(width * dpr, height * dpr) },
+        iResolution: { value: new THREE.Vector3(width * dpr, height * dpr, dpr) },
         uColorHot: { value: new THREE.Color(0xffffff) },
         uColorMid1: { value: new THREE.Color(0xff7722) },
         uColorMid2: { value: new THREE.Color(0xff3b00) }, // Grevix High-Energy Orange
@@ -260,6 +266,8 @@ export class HeroBlackHoleController {
       `,
       fragmentShader: `
         uniform float uTime;
+        uniform vec2 u_resolution;
+        uniform vec3 iResolution;
         uniform vec3 uColorHot;
         uniform vec3 uColorMid1;
         uniform vec3 uColorMid2;
@@ -378,11 +386,20 @@ export class HeroBlackHoleController {
     this.theiaSystem = new THREE.Group();
     this.scene.add(this.theiaSystem);
 
-    const loader = new THREE.TextureLoader();
-    const iceTexture = loader.load(resolveAsset('./assets/new_3D/theia-prime-g-frozen-ice-giant-moons/textures/ice_planet_textur.jpeg'));
+    const configureTexture = (tex) => {
+      if (!tex) return;
+      tex.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.generateMipmaps = true;
+      tex.needsUpdate = true;
+    };
 
-    // Planet Mesh
-    const theiaGeom = new THREE.SphereGeometry(1.25, 48, 48);
+    const loader = new THREE.TextureLoader();
+    const iceTexture = loader.load(resolveAsset('./assets/new_3D/theia-prime-g-frozen-ice-giant-moons/textures/ice_planet_textur.jpeg'), configureTexture);
+
+    // Planet Mesh with 128x128 Segments
+    const theiaGeom = new THREE.SphereGeometry(1.25, 128, 128);
     const theiaMat = new THREE.MeshStandardMaterial({
       map: iceTexture,
       roughness: 0.35,
@@ -392,8 +409,8 @@ export class HeroBlackHoleController {
     this.theiaMesh.rotation.z = 0.3; // Axial tilt
     this.theiaSystem.add(this.theiaMesh);
 
-    // 3D Planetary Ice Rings
-    const ringGeom = new THREE.RingGeometry(1.5, 2.5, 64);
+    // 3D Planetary Ice Rings with 128x64 Segments
+    const ringGeom = new THREE.RingGeometry(1.5, 2.5, 128, 64);
     const ringMat = new THREE.MeshBasicMaterial({
       color: 0x7dd3fc,
       side: THREE.DoubleSide,
@@ -405,7 +422,7 @@ export class HeroBlackHoleController {
     this.theiaMesh.add(this.theiaRings);
 
     // Atmospheric Ice Fresnel Rim Glow
-    const rimGeom = new THREE.SphereGeometry(1.32, 48, 48);
+    const rimGeom = new THREE.SphereGeometry(1.32, 128, 128);
     const rimMat = new THREE.ShaderMaterial({
       uniforms: {
         glowColor: { value: new THREE.Color(0x38bdf8) }
@@ -463,9 +480,9 @@ export class HeroBlackHoleController {
     ];
 
     moonConfigs.forEach((cfg) => {
-      const tex = loader.load(resolveAsset(cfg.path));
+      const tex = loader.load(resolveAsset(cfg.path), configureTexture);
       const mMesh = new THREE.Mesh(
-        new THREE.SphereGeometry(cfg.size, 24, 24),
+        new THREE.SphereGeometry(cfg.size, 128, 128),
         new THREE.MeshStandardMaterial({ map: tex, roughness: 0.75 })
       );
       this.theiaSystem.add(mMesh);
@@ -478,12 +495,21 @@ export class HeroBlackHoleController {
     this.millersSystem = new THREE.Group();
     this.scene.add(this.millersSystem);
 
-    const loader = new THREE.TextureLoader();
-    const diffuse = loader.load(resolveAsset('./assets/new_3D/millers-planet-interstellar/textures/ef362dae-eeee-4ed8-8810-42ee5ea61847.png'));
-    const normal = loader.load(resolveAsset('./assets/new_3D/millers-planet-interstellar/textures/41f4fbb5-94c5-47de-a910-1310b02f8337.png'));
-    const rough = loader.load(resolveAsset('./assets/new_3D/millers-planet-interstellar/textures/b00d38e4-2feb-466f-a79a-6467b926f3cf.png'));
+    const configureTexture = (tex) => {
+      if (!tex) return;
+      tex.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
+      tex.minFilter = THREE.LinearMipmapLinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.generateMipmaps = true;
+      tex.needsUpdate = true;
+    };
 
-    const millersGeom = new THREE.SphereGeometry(1.15, 64, 64);
+    const loader = new THREE.TextureLoader();
+    const diffuse = loader.load(resolveAsset('./assets/new_3D/millers-planet-interstellar/textures/ef362dae-eeee-4ed8-8810-42ee5ea61847.png'), configureTexture);
+    const normal = loader.load(resolveAsset('./assets/new_3D/millers-planet-interstellar/textures/41f4fbb5-94c5-47de-a910-1310b02f8337.png'), configureTexture);
+    const rough = loader.load(resolveAsset('./assets/new_3D/millers-planet-interstellar/textures/b00d38e4-2feb-466f-a79a-6467b926f3cf.png'), configureTexture);
+
+    const millersGeom = new THREE.SphereGeometry(1.15, 128, 128);
     const millersMat = new THREE.MeshStandardMaterial({
       map: diffuse,
       normalMap: normal,
@@ -496,7 +522,7 @@ export class HeroBlackHoleController {
     this.millersSystem.add(this.millersMesh);
 
     // Cyan Ocean Atmospheric Glow
-    const atmoGeom = new THREE.SphereGeometry(1.22, 64, 64);
+    const atmoGeom = new THREE.SphereGeometry(1.22, 128, 128);
     const atmoMat = new THREE.ShaderMaterial({
       uniforms: {
         glowColor: { value: new THREE.Color(0x00d2ff) }
@@ -626,12 +652,21 @@ export class HeroBlackHoleController {
       if (!this.container || !this.renderer || !this.camera) return;
       const width = this.container.clientWidth || window.innerWidth;
       const height = this.container.clientHeight || window.innerHeight;
+      const dpr = Math.min(window.devicePixelRatio || 2, 2.5);
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(width, height);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-      if (this.starMaterial) {
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 2, 3));
+      if (this.starMaterial && this.starMaterial.uniforms && this.starMaterial.uniforms.uPixelRatio) {
         this.starMaterial.uniforms.uPixelRatio.value = this.renderer.getPixelRatio();
+      }
+      if (this.diskMaterial && this.diskMaterial.uniforms) {
+        if (this.diskMaterial.uniforms.u_resolution) {
+          this.diskMaterial.uniforms.u_resolution.value.set(width * dpr, height * dpr);
+        }
+        if (this.diskMaterial.uniforms.iResolution) {
+          this.diskMaterial.uniforms.iResolution.value.set(width * dpr, height * dpr, dpr);
+        }
       }
     };
     window.addEventListener('resize', this.handleResize);

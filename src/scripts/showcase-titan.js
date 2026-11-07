@@ -30,13 +30,18 @@ export class PortalBackdropController {
     const parent = this.canvas.parentElement || { clientWidth: window.innerWidth, clientHeight: 520 };
     this.width = parent.clientWidth || window.innerWidth;
     this.height = parent.clientHeight || 520;
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
+    const dpr = Math.min(window.devicePixelRatio || 2, 2.5);
+    this.canvas.width = Math.round(this.width * dpr);
+    this.canvas.height = Math.round(this.height * dpr);
     this.canvas.style.position = 'absolute';
     this.canvas.style.inset = '0';
     this.canvas.style.width = '100%';
     this.canvas.style.height = '100%';
     this.canvas.style.pointerEvents = 'none';
+    if (typeof this.ctx.resetTransform === 'function') {
+      this.ctx.resetTransform();
+    }
+    this.ctx.scale(dpr, dpr);
   }
 
   initParticles() {
@@ -184,7 +189,7 @@ export class TitanShowcaseController {
       powerPreference: 'high-performance'
     });
     this.renderer.setSize(width, height);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 2, 3));
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.35;
 
@@ -265,7 +270,7 @@ export class TitanShowcaseController {
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(width, height);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 2, 3));
     });
   }
 
