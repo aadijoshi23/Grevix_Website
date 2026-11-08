@@ -1,0 +1,527 @@
+/* =========================================================================
+   GREVIX — CALM JAPANDI EDITORIAL DESIGN SYSTEM
+   Deep Sumi Ink (#0e1211) • Warm Washi Cream (#f2eee6) • Soft Sand (#bfb8a8)
+   Muted Japanese Vermilion / Shuu-iro (#c85a4e)
+   ========================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&family=Noto+Serif+JP:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --color-canvas: #0e1211;
+  --color-surface: rgba(22, 27, 26, 0.62);
+  --color-surface-hover: rgba(28, 34, 33, 0.78);
+  --color-cream: #f2eee6;
+  --color-sand: #bfb8a8;
+  --color-sand-muted: rgba(191, 184, 168, 0.65);
+  --color-vermilion: #c85a4e;
+  --color-vermilion-hover: #d8665a;
+  --color-vermilion-subtle: rgba(200, 90, 78, 0.16);
+  --color-vermilion-border: rgba(200, 90, 78, 0.35);
+  --color-border: rgba(235, 230, 220, 0.1);
+  --color-border-hover: rgba(235, 230, 220, 0.28);
+  --color-border-bright: rgba(242, 238, 230, 0.5);
+
+  --font-serif: 'Shippori Mincho', 'Cormorant Garamond', 'Noto Serif JP', serif;
+  --font-editorial: 'Cormorant Garamond', 'Shippori Mincho', serif;
+  --font-display: 'Cinzel', 'Shippori Mincho', serif;
+  --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-jp: 'Noto Serif JP', 'Shippori Mincho', serif;
+}
+
+/* =========================================================================
+   BASE RESET & TYPOGRAPHY
+   ========================================================================= */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--color-canvas);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-canvas);
+  color: var(--color-cream);
+  overflow-x: hidden;
+  min-height: 100vh;
+  line-height: 1.65;
+}
+
+::selection {
+  background-color: rgba(200, 90, 78, 0.35);
+  color: var(--color-cream);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0d0c;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(235, 230, 220, 0.18);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 90, 78, 0.45);
+}
+
+/* =========================================================================
+   1. FULL-BLEED VIDEO BACKGROUND ARCHITECTURE (4 PAGES / SECTIONS)
+   ========================================================================= */
+
+.zen-video-stage {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background-color: var(--color-canvas);
+}
+
+.zen-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  will-change: opacity;
+}
+
+.zen-bg-video.active {
+  opacity: 1;
+}
+
+/* MANDATORY DARK SUMI-INK CONTRAST GRADIENT OVERLAY (Z-INDEX 1) */
+.sumi-ink-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(14, 18, 17, 0.72) 0%, rgba(14, 18, 17, 0.52) 50%, rgba(14, 18, 17, 0.88) 100%);
+}
+
+/* DELICATE ORGANIC WASHI PAPER FIBER TEXTURE OVERLAY */
+.washi-fiber-texture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.035;
+  background-image: 
+    radial-gradient(rgba(242, 238, 230, 0.35) 1px, transparent 1px),
+    radial-gradient(rgba(200, 90, 78, 0.25) 1px, transparent 1px);
+  background-size: 20px 20px, 40px 40px;
+  background-position: 0 0, 10px 10px;
+}
+
+/* =========================================================================
+   2. REFINED MINIMALIST NAVBAR & NAVIGATION
+   ========================================================================= */
+
+.zen-navbar {
+  background: rgba(14, 18, 17, 0.78);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.zen-brand-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  color: var(--color-cream);
+  transition: color 0.3s ease;
+}
+
+.zen-nav-link {
+  position: relative;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--color-sand);
+  padding: 8px 14px;
+  transition: color 0.3s ease;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.zen-nav-link:hover {
+  color: var(--color-cream);
+}
+
+.zen-nav-link.active {
+  color: var(--color-cream);
+  font-weight: 500;
+}
+
+/* Small active indicator dot (Vermilion #c85a4e) */
+.zen-nav-indicator {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background-color: var(--color-vermilion);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.zen-nav-link.active .zen-nav-indicator {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+}
+
+/* =========================================================================
+   3. JAPANDI CARDS & SURFACES (ROCK-SOLID FLAT LAYOUT)
+   ========================================================================= */
+
+.washi-card {
+  position: relative;
+  background: var(--color-surface);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease;
+  will-change: transform, border-color;
+}
+
+/* Calm, rock-solid hover: subtle 1.01x scale and smooth border highlight */
+.washi-card:hover {
+  transform: scale(1.01);
+  border-color: var(--color-border-hover);
+  background-color: var(--color-surface-hover);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.55);
+}
+
+/* Inner hairline divider */
+.washi-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--color-border) 25%, var(--color-border) 75%, transparent 100%);
+}
+
+/* =========================================================================
+   4. MINIMALIST, CALM PILL BUTTONS (NO AGGRESSIVE GLITCHES)
+   ========================================================================= */
+
+/* Base Pill Button */
+.zen-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 22px;
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  will-change: transform, border-color;
+}
+
+/* On hover: gentle +2px float, subtle cream border brightening, soft ambient glow */
+.zen-pill:hover {
+  transform: translateY(-2px);
+}
+
+/* Vermilion Accent Pill (Primary) */
+.zen-pill-vermilion {
+  background: var(--color-vermilion);
+  color: var(--color-cream);
+  border: 1px solid var(--color-vermilion);
+}
+
+.zen-pill-vermilion:hover {
+  background: var(--color-vermilion-hover);
+  border-color: var(--color-border-bright);
+  box-shadow: 0 4px 20px rgba(200, 90, 78, 0.35);
+  color: #ffffff;
+}
+
+/* Cream Outline Pill (Clean Editorial) */
+.zen-pill-outline {
+  background: rgba(22, 27, 26, 0.45);
+  color: var(--color-cream);
+  border: 1px solid rgba(235, 230, 220, 0.2);
+  backdrop-filter: blur(12px);
+}
+
+.zen-pill-outline:hover {
+  border-color: var(--color-border-bright);
+  background: rgba(32, 38, 37, 0.7);
+  box-shadow: 0 4px 20px rgba(242, 238, 230, 0.09);
+  color: #ffffff;
+}
+
+/* Soft Sand Pill */
+.zen-pill-subtle {
+  background: rgba(235, 230, 220, 0.06);
+  color: var(--color-sand);
+  border: 1px solid rgba(235, 230, 220, 0.12);
+}
+
+.zen-pill-subtle:hover {
+  color: var(--color-cream);
+  border-color: var(--color-border-hover);
+  background: rgba(235, 230, 220, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* Minimalist Stat Pills */
+.zen-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  border-radius: 9999px;
+  background: rgba(22, 27, 26, 0.68);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.zen-stat-pill:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-border-hover);
+}
+
+/* Washi Tag Pill */
+.washi-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  background: rgba(235, 230, 220, 0.07);
+  border: 1px solid rgba(235, 230, 220, 0.12);
+  color: var(--color-sand);
+}
+
+.washi-tag-vermilion {
+  background: var(--color-vermilion-subtle);
+  border-color: var(--color-vermilion-border);
+  color: var(--color-cream);
+}
+
+/* Japanese Cultural Seal Mark (Hanko / Stamp) */
+.zen-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  border: 1px solid var(--color-vermilion);
+  color: var(--color-vermilion);
+  font-family: var(--font-jp);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  background: rgba(200, 90, 78, 0.08);
+  user-select: none;
+}
+
+/* =========================================================================
+   5. EDITORIAL TYPOGRAPHY CLASSES
+   ========================================================================= */
+
+.font-editorial-serif {
+  font-family: var(--font-serif);
+}
+
+.font-editorial-italic {
+  font-family: var(--font-editorial);
+  font-style: italic;
+}
+
+.font-zen-display {
+  font-family: var(--font-display);
+}
+
+.font-zen-mono {
+  font-family: var(--font-mono);
+}
+
+.font-zen-jp {
+  font-family: var(--font-jp);
+}
+
+.text-washi-cream {
+  color: var(--color-cream);
+}
+
+.text-washi-sand {
+  color: var(--color-sand);
+}
+
+.text-washi-vermilion {
+  color: var(--color-vermilion);
+}
+
+/* Subtle Kanji Watermark in Background */
+.kanji-watermark {
+  font-family: var(--font-jp);
+  color: rgba(242, 238, 230, 0.04);
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* =========================================================================
+   6. TRANQUIL MODAL & DRAWER SYSTEM
+   ========================================================================= */
+
+.zen-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(10, 13, 12, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.zen-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.zen-modal-dialog {
+  background: rgba(18, 22, 21, 0.94);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--color-border-hover);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.8);
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.zen-modal-backdrop.open .zen-modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+/* Form Inputs in Japandi Style */
+.zen-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(12, 15, 14, 0.7);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  transition: border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.zen-input:focus {
+  outline: none;
+  border-color: var(--color-border-bright);
+  background: rgba(18, 22, 21, 0.9);
+  box-shadow: 0 0 0 3px rgba(242, 238, 230, 0.08);
+}
+
+.zen-input::placeholder {
+  color: rgba(191, 184, 168, 0.4);
+}
+
+/* Calm Toast Notification */
+.zen-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  background: rgba(18, 22, 21, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--color-border-hover);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-cream);
+  transform: translateY(40px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+
+.zen-toast.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Status Dot */
+.zen-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--color-vermilion);
+  display: inline-block;
+}
+
+.zen-dot-pulse {
+  animation: zenPulse 2.8s infinite ease-in-out;
+}
+
+@keyframes zenPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
